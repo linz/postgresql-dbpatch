@@ -1,0 +1,27 @@
+{
+    "name": "dbpatch",
+    "abstract": "PostgreSQL database patch change management extension",
+    "description": "A long description",
+    "version": "1.0.0",
+    "maintainer": "jpalmer@linz.govt.nz",
+    "license": "BSD 3-clause License",
+    "provides": {
+        "dbpatch": {
+            "abstract": "PostgreSQL database patch change management extension",
+            "file": "sql/dbpatch.sql",
+            "docfile": "doc/dbpatch.md",
+            "version": "1.0.0"
+        }
+    },
+    "release_status": "unstable",
+
+    "generated_by": "Jeremy Palmer",
+
+
+    "tags": [ "patch change management deploying database" ],
+
+    "meta-spec": {
+        "version": "1.0.0",
+        "url": "http://pgxn.org/meta/spec.txt"
+    }
+}

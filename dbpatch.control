@@ -1,0 +1,4 @@
+# dbpatch extension
+comment = 'PostgreSQL database patch change management extension'
+default_version = '1.0.0'
+relocatable = true
