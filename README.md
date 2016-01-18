@@ -1,7 +1,7 @@
-dbpatch
-=======
+postgresql-dbpatch
+==================
 
-A long description
+PostgreSQL database patch change management extension. This extension supports conducting database changes and deploying them in a robust and automated way.
 
 To build it, just do this:
 
@@ -53,6 +53,10 @@ super user and running:
 
     CREATE EXTENSION dbpatch;
 
+If you want to install dbpatch into a specific schema run:
+
+    CREATE EXTENSION dbpatch my_schema;
+
 If you've upgraded your cluster to PostgreSQL 9.1 and already had dbpatch
 installed, you can upgrade it to a properly packaged extension with:
 
@@ -71,10 +75,10 @@ so:
 
 Dependencies
 ------------
-The `dbpatch` data type has no dependencies other than PostgreSQL.
+The `dbpatch` extension has no dependencies other than PostgreSQL and PL/PgSQL
 
-Copyright and License
+License
 ---------------------
-
-Copyright (c) 2016 jpalmer@linz.govt.nz.
+This project is under 3-clause BSD License, except where otherwise specified.
+See the LICENSE file for more details.
 

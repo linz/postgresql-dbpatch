@@ -1,21 +1,10 @@
-/*
- * Author: jpalmer@linz.govt.nz
- * Created at: 2016-01-17 18:56:19 +1300
- *
- */
-
 --
--- This is a example code genereted automaticaly
--- by pgxn-utils.
+-- NOTE: use this script only with PostgreSQL before 9.1
+-- Starting from PostgreSQL 9.1 use DROP EXTENSION dbpatch instead.
+--
 
-SET client_min_messages = warning;
+DROP FUNCTION apply_patch(p_patch_name TEXT, p_patch_sql TEXT);
+DROP FUNCTION apply_patch(p_patch_name TEXT, p_patch_sql TEXT[]);
 
-BEGIN;
+DROP TABLE applied_patches;
 
--- You can use this statements as
--- template for your extension.
-
-DROP OPERATOR #? (text, text);
-DROP FUNCTION dbpatch(text, text);
-DROP TYPE dbpatch CASCADE;
-COMMIT;

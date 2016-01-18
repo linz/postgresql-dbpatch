@@ -1,31 +1,91 @@
-/*
- * Author: jpalmer@linz.govt.nz
- * Created at: 2016-01-17 18:56:19 +1300
- *
- */
-
+--------------------------------------------------------------------------------
 --
--- This is a example code genereted automaticaly
--- by pgxn-utils.
+-- $Id$
+--
+-- linz_bde_loader - LINZ BDE loader for PostgreSQL
+--
+-- Copyright 2011 Crown copyright (c)
+-- Land Information New Zealand and the New Zealand Government.
+-- All rights reserved
+--
+-- This software is released under the terms of the new BSD license. See the 
+-- LICENSE file for more information.
+--
+--------------------------------------------------------------------------------
+-- Creates LDS patch versioning management system. This system is used for
+-- Applying table DDL and data updates to an already installed system.
+--------------------------------------------------------------------------------
 
-SET client_min_messages = warning;
+-- complain if script is sourced in psql, rather than via CREATE EXTENSION
+\echo Use "CREATE EXTENSION dbpatch" to load this file. \quit
 
--- If your extension will create a type you can
--- do somenthing like this
-CREATE TYPE dbpatch AS ( a text, b text );
-
--- Maybe you want to create some function, so you can use
--- this as an example
-CREATE OR REPLACE FUNCTION dbpatch (text, text)
-RETURNS dbpatch LANGUAGE SQL AS 'SELECT ROW($1, $2)::dbpatch';
-
--- Sometimes it is common to use special operators to
--- work with your new created type, you can create
--- one like the command bellow if it is applicable
--- to your case
-
-CREATE OPERATOR #? (
-	LEFTARG   = text,
-	RIGHTARG  = text,
-	PROCEDURE = dbpatch
+CREATE TABLE IF NOT EXISTS applied_patches (
+    patch_name TEXT NOT NULL PRIMARY KEY,
+    datetime_applied TIMESTAMP NOT NULL DEFAULT now(),
+    patch_sql TEXT[] NOT NULL
 );
+
+SELECT pg_catalog.pg_extension_config_dump('applied_patches', '');
+
+CREATE OR REPLACE FUNCTION apply_patch(
+    p_patch_name TEXT,
+    p_patch_sql  TEXT[]
+)
+RETURNS
+    BOOLEAN AS
+$$
+DECLARE
+    v_sql TEXT;
+BEGIN
+    -- Make sure that only one patch can be applied at a time
+    LOCK TABLE @extschema@.applied_patches IN EXCLUSIVE MODE;
+
+    IF EXISTS (
+        SELECT patch_name
+        FROM   @extschema@.applied_patches
+        WHERE  patch_name = p_patch_name
+    )
+    THEN
+        RAISE INFO 'Patch % is already applied', p_patch_name;
+        RETURN FALSE;
+    END IF;
+    
+    RAISE INFO 'Applying patch %', p_patch_name;
+    
+    BEGIN
+        FOR v_sql IN SELECT * FROM unnest(p_patch_sql) LOOP
+            RAISE DEBUG 'Running SQL: %', v_sql;
+            EXECUTE v_sql;
+        END LOOP;
+    EXCEPTION
+        WHEN others THEN
+            RAISE EXCEPTION 'Could not applied % patch using %. ERROR: %',
+                p_patch_name, v_sql, SQLERRM;
+    END;
+
+    INSERT INTO  @extschema@.applied_patches(
+        patch_name,
+        datetime_applied,
+        patch_sql
+    )
+    VALUES(
+        p_patch_name,
+        now(),
+        p_patch_sql
+    );
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION apply_patch(
+    p_patch_name TEXT,
+    p_patch_sql  TEXT
+)
+RETURNS
+    BOOLEAN AS
+$$
+    SELECT @extschema@.apply_patch($1, ARRAY[$2])
+$$
+    LANGUAGE sql;
+
+
