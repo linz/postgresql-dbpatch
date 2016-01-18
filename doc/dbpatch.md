@@ -126,7 +126,7 @@ Issues](http://github.com/linz/postgresql-dbpatch/issues/).
 Author
 ------
 
-[Jeremy Palmer][http://www.linz.govt.nz]
+[Jeremy Palmer](http://www.linz.govt.nz)
 
 Copyright and License
 ---------------------
