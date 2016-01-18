@@ -1,3 +1,16 @@
+--------------------------------------------------------------------------------
+
+-- postgresql-dbpatch - PostgreSQL database patch change management extension
+--
+-- Copyright 2016 Crown copyright (c)
+-- Land Information New Zealand and the New Zealand Government.
+-- All rights reserved
+--
+-- This software is released under the terms of the new BSD license. See the 
+-- LICENSE file for more information.
+--
+--------------------------------------------------------------------------------
+
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION dbpatch FROM unpackaged" to load this file. \quit
 

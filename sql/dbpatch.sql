@@ -1,19 +1,14 @@
 --------------------------------------------------------------------------------
+
+-- postgresql-dbpatch - PostgreSQL database patch change management extension
 --
--- $Id$
---
--- linz_bde_loader - LINZ BDE loader for PostgreSQL
---
--- Copyright 2011 Crown copyright (c)
+-- Copyright 2016 Crown copyright (c)
 -- Land Information New Zealand and the New Zealand Government.
 -- All rights reserved
 --
 -- This software is released under the terms of the new BSD license. See the 
 -- LICENSE file for more information.
 --
---------------------------------------------------------------------------------
--- Creates LDS patch versioning management system. This system is used for
--- Applying table DDL and data updates to an already installed system.
 --------------------------------------------------------------------------------
 
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
