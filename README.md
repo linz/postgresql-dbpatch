@@ -50,7 +50,7 @@ You need to run the test suite using a super user, such as the default
 
     make installcheck PGUSER=postgres
 
-Building Debian psackaging
+Building Debian packaging
 --------------------------
 
 Build the debian packages using the following command:
