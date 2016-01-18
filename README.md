@@ -3,6 +3,9 @@ postgresql-dbpatch
 
 PostgreSQL database patch change management extension. This extension supports conducting database changes and deploying them in a robust and automated way.
 
+Installation
+------------
+
 To build it, just do this:
 
     make
@@ -46,6 +49,16 @@ You need to run the test suite using a super user, such as the default
 "postgres" super user:
 
     make installcheck PGUSER=postgres
+
+Building Debian psackaging
+--------------------------
+
+Build the debian packages using the following command:
+
+    dpkg-buildpackage -us -uc
+
+Installing the extension
+------------------------
 
 Once dbpatch is installed, you can add it to a database. If you're running
 PostgreSQL 9.1.0 or greater, it's a simple as connecting to a database as a
