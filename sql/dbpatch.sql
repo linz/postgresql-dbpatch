@@ -21,7 +21,7 @@ CREATE TABLE applied_patches (
 );
 
 COMMENT ON TABLE applied_patches
-  IS 'Table dbpatch versioning data';
+  IS 'dbpatch versioning data';
   
 SELECT pg_catalog.pg_extension_config_dump('applied_patches', '');
 
