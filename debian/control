@@ -1,4 +1,4 @@
-Source: postgresql-9.3-dbpatch
+Source: postgresql-dbpatch
 Section: database
 Priority: extra
 Build-Depends: debhelper (>= 7), libapt-pkg-dev, postgresql-server-dev-9.3

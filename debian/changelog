@@ -1,0 +1,5 @@
+postgresql-dbpatch (1.0.0-1) UNRELEASED; urgency=medium
+
+  * Initial release.
+
+ -- Jeremy Palmer <jpalmer@linz.govt.nz>  Mon, 18 Jan 2016 15:58:13 +1300
