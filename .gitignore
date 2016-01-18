@@ -12,6 +12,13 @@ regression.out
 #################
 **/*~
 
+# Debian Packaging
+##################
+debian/postgresql*-dbpatch/
+debian/postgresql*dbpatch.substvars
+debian/postgresql*dbpatch.debhelper
+debian/files
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source

@@ -14,12 +14,15 @@
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION dbpatch" to load this file. \quit
 
-CREATE TABLE IF NOT EXISTS applied_patches (
+CREATE TABLE applied_patches (
     patch_name TEXT NOT NULL PRIMARY KEY,
     datetime_applied TIMESTAMP NOT NULL DEFAULT now(),
     patch_sql TEXT[] NOT NULL
 );
 
+COMMENT ON TABLE applied_patches
+  IS 'Table dbpatch versioning data';
+  
 SELECT pg_catalog.pg_extension_config_dump('applied_patches', '');
 
 CREATE OR REPLACE FUNCTION apply_patch(
