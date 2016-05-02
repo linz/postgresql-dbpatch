@@ -1,5 +1,9 @@
-EXTENSION    = dbpatch
-EXTVERSION   = $(shell grep default_version $(EXTENSION).control | sed -e "s/default_version[[:space:]]*=[[:space:]]*'\([^']*\)'/\1/")
+EXTVERSION   = dev
+
+META         = META.json
+EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
+
+SED = sed
 
 DATA         = $(filter-out $(wildcard sql/*--*.sql),$(wildcard sql/*.sql))
 DOCS         = $(wildcard doc/*.md)
@@ -17,11 +21,17 @@ PG91         = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo no
 ifeq ($(PG91),yes)
 all: sql/$(EXTENSION)--$(EXTVERSION).sql
 
-sql/$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql
+sql/$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META)
 	cp $< $@
 
+$(META): $(META).in
+	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+
+$(EXTENSION).control: $(EXTENSION).control.in
+	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+ 
 DATA = $(wildcard sql/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
-EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql
+EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql $(EXTENSION).control $(META)
 endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)

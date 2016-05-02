@@ -2,7 +2,7 @@
     "name": "dbpatch",
     "abstract": "PostgreSQL database patch change management extension",
     "description": "PostgreSQL database patch change management extension. This extension supports conducting database changes and deploying them in a robust and automated way.",
-    "version": "1.0.0",
+    "version": "@@VERSION@@",
     "maintainer": "jpalmer@linz.govt.nz",
     "license": "bsd",
     "provides": {
@@ -10,7 +10,7 @@
             "abstract": "PostgreSQL database patch change management extension",
             "file": "sql/dbpatch.sql",
             "docfile": "doc/dbpatch.md",
-            "version": "1.0.0"
+            "version": "@@VERSION@@"
         }
     },
     "prereqs": {
