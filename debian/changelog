@@ -1,5 +1,12 @@
-postgresql-dbpatch (1.0.0-1) trusty; urgency=medium
+postgresql-dbpatch (1.0.1-1linz~trusty1) UNRELEASED; urgency=medium
+
+  * Updating to Debian 3.0 packaging format
+
+ -- Jeremy Palmer <jpalmer@linz.govt.nz>  Mon, 02 May 2016 14:24:10 +1200
+
+postgresql-dbpatch (1.0.0-1linz~trusty1) trusty; urgency=medium
 
   * Initial release.
 
  -- Jeremy Palmer <jpalmer@linz.govt.nz>  Mon, 18 Jan 2016 17:02:51 +1300
+
