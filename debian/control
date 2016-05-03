@@ -1,17 +1,20 @@
 Source: postgresql-dbpatch
 Section: database
 Priority: extra
-Build-Depends: debhelper (>= 7), postgresql-server-dev-9.3
+Build-Depends: debhelper (>= 7),
+               postgresql-server-dev-9.3
+Standards-Version: 3.9.5
 Maintainer: Jeremy Palmer (LINZ) <jpalmer@linz.govt.nz>
 Homepage: http://www.linz.govt.nz
-Vcs-Svn: git://github.com/linz/postgresql-dbpatch.git
+Vcs-Git: git://github.com/linz/postgresql-dbpatch.git
 Vcs-Browser: https://github.com/linz/postgresql-dbpatch
 
 Package: postgresql-9.3-dbpatch
 Architecture: all
-Depends: ${misc:Depends}, postgresql-9.3
+Depends: ${misc:Depends},
+         postgresql-9.3
 Recommends:
-Description: PostgreSQL database patch change management extension. This 
+Description: PostgreSQL database patch change management extension. This
  extension supports conducting database changes and deploying them in a robust
  and automated way.
 
