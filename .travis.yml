@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 language: C++
 services:
   - postgresql: "9.4"
@@ -9,5 +9,5 @@ addons:
     - postgresql-server-dev-9.4
 script:
   - make
-  - make install
+  - sudo make install
   - make installcheck || { cat regression.diffs; false; }
