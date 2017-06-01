@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/linz/postgresql-dbpatch.svg)](http://travis-ci.org/linz/postgresql-dbpatch)
+
 postgresql-dbpatch
 ==================
 
