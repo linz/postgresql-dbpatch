@@ -1,3 +1,4 @@
+\set VERBOSITY terse
 BEGIN;
 
 CREATE EXTENSION dbpatch;

@@ -1,3 +1,4 @@
+\set VERBOSITY terse
 BEGIN;
 CREATE EXTENSION dbpatch;
 SELECT apply_patch('test patch 1', ARRAY['SELECT 1', 'SELECT 2']);
