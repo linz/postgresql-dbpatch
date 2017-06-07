@@ -8,11 +8,11 @@ PostgreSQL database patch change management extension. This extension supports c
 Installation
 ------------
 
-To build it, just do this:
+To build it, install and check installation, just do this:
 
     make
-    make installcheck
     make install
+    make installcheck
 
 If you encounter an error such as:
 
