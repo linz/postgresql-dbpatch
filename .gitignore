@@ -7,6 +7,8 @@ tmp/
 regression.diffs
 regression.out
 /sql/ extension_name =>--*
+META.json
+dbpatch.control
 
 # Editor Backup #
 #################
