@@ -5,7 +5,7 @@ EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"n
 
 SED = sed
 
-DATA         = $(filter-out $(wildcard sql/*--*.sql),$(wildcard sql/*.sql))
+DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
@@ -30,7 +30,6 @@ $(META): $(META).in
 $(EXTENSION).control: $(EXTENSION).control.in
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
  
-DATA = $(wildcard sql/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
 EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql $(EXTENSION).control $(META)
 endif
 
