@@ -32,6 +32,7 @@ CREATE OR REPLACE FUNCTION apply_patch(
 RETURNS
     BOOLEAN AS
 $$
+-- $Id$
 DECLARE
     v_sql TEXT;
 BEGIN
@@ -82,6 +83,7 @@ CREATE OR REPLACE FUNCTION apply_patch(
 RETURNS
     BOOLEAN AS
 $$
+    -- $Id$
     SELECT @extschema@.apply_patch($1, ARRAY[$2])
 $$
     LANGUAGE sql;
