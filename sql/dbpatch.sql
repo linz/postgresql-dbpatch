@@ -14,7 +14,7 @@
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION dbpatch" to load this file. \quit
 
-CREATE TABLE applied_patches (
+CREATE TABLE IF NOT EXISTS applied_patches (
     patch_name TEXT NOT NULL PRIMARY KEY,
     datetime_applied TIMESTAMP NOT NULL DEFAULT now(),
     patch_sql TEXT[] NOT NULL
