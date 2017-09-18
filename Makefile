@@ -32,10 +32,10 @@ all: $(EXTENSION)--$(EXTVERSION).sql
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META)
 	$(SED) -e 's/$$Id$$/$(EXTREVISION)/' $< > $@
 
-$(META): $(META).in
+$(META): $(META).in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
-$(EXTENSION).control: $(EXTENSION).control.in
+$(EXTENSION).control: $(EXTENSION).control.in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
  
 EXTRA_CLEAN = \
