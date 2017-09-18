@@ -18,6 +18,8 @@ DOCS         = $(wildcard doc/*.md)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-language=plpgsql
+REGRESS_PREP = testdeps
+
 #
 # Uncoment the MODULES line if you are adding C files
 # to your extention.
@@ -58,3 +60,25 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)next--$(EXTVERSION).sql
 
 all: upgrade-scripts
+
+# This is phony because it depends on env variables
+.PHONY: test/sql/preparedb
+test/sql/preparedb: test/sql/preparedb.in
+	cat $< | \
+	  if test "${PREPAREDB_UPGRADE}" = 1; then \
+      if test -n "${PREPAREDB_UPGRADE_FROM}"; then \
+        UPGRADE_FROM="version '${PREPAREDB_UPGRADE_FROM}'"; \
+      else \
+        UPGRADE_FROM=""; \
+      fi; \
+      $(SED) -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
+    else \
+      cat; \
+    fi | \
+	  $(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
+
+installcheck-upgrade:
+	PREPAREDB_UPGRADE=1 make installcheck
+
+.PHONY: testdeps
+testdeps: test/sql/preparedb
