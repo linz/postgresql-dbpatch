@@ -9,6 +9,7 @@ regression.out
 /sql/ extension_name =>--*
 META.json
 dbpatch.control
+test/sql/preparedb
 
 # Editor Backup #
 #################

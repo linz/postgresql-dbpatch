@@ -1,12 +1,11 @@
-\set VERBOSITY terse
+\set ECHO none
+\i test/sql/preparedb
 BEGIN;
 
-CREATE EXTENSION dbpatch;
-
-SELECT apply_patch('test patch 1', ARRAY['SELECT 1', 'SELECT 2']);
-SELECT apply_patch('test patch 2', 'SELECT 1');
-SELECT apply_patch('test patch 2', 'SELECT 1');
-SELECT apply_patch('test bad patch SQL', 'SELET 1');
+SELECT 't1', apply_patch('test patch 1', ARRAY['SELECT 1', 'SELECT 2']);
+SELECT 't2', apply_patch('test patch 2', 'SELECT 1');
+SELECT 't3', apply_patch('test patch 2', 'SELECT 1');
+SELECT 't4', apply_patch('test bad patch SQL', 'SELET 1');
 
 ROLLBACK;
 

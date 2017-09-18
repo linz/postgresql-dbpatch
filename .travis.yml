@@ -55,3 +55,5 @@ script:
   - make
   - sudo make install
   - make installcheck || { cat regression.diffs; false; }
+  # Test upgrades from all tagged versions
+  - test/ci/test_all_upgrades.sh
