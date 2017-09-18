@@ -3,6 +3,9 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
+## [1.2.0dev] - 2017-MM-DD
+### Changed
+
 ## [1.1.0] - 2017-09-18
 ### Changed
 - Generate upgrade scripts (#10)
