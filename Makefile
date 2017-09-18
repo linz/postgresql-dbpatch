@@ -1,4 +1,4 @@
-EXTVERSION   = dev
+EXTVERSION   = 1.0.2
 EXTREVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 META         = META.json
