@@ -61,6 +61,11 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 
 all: upgrade-scripts
 
+deb:
+	pg_buildext updatecontrol
+	dpkg-buildpackage -us -uc -b
+
+
 # This is phony because it depends on env variables
 .PHONY: test/sql/preparedb
 test/sql/preparedb: test/sql/preparedb.in

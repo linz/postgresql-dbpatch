@@ -55,9 +55,15 @@ You need to run the test suite using a super user, such as the default
 Building Debian packaging
 --------------------------
 
-Build the debian packages using the following command:
+Build the Debian packages using the following command:
 
-    dpkg-buildpackage -us -uc
+    make deb
+
+The number of packages built will depend on the number of supported
+PostgreSQL versions on your system. Make sure to install the
+postgresql-server-dev-all package, and consider adding the
+postgresql.org apt repository to get the most versions out
+of it (see https://wiki.postgresql.org/wiki/Apt
 
 Installing the extension
 ------------------------
