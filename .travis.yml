@@ -54,11 +54,11 @@ before_install:
 
 script:
   - make
-  - sudo make install
-  - make installcheck || { cat regression.diffs; false; }
+  - sudo env "PATH=$PATH" make install
+  - PGPORT=5432 make installcheck || { cat regression.diffs; false; }
 
   # Test upgrades from all tagged versions
-  - test/ci/test_all_upgrades.sh
+  - PGPORT=5432 test/ci/test_all_upgrades.sh
 
   # Test build and install from package
   - PG_SUPPORTED_VERSIONS=${POSTGRESQL} make deb
