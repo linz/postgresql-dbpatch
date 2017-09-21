@@ -1,5 +1,5 @@
 EXTVERSION   = 1.2.0dev
-EXTREVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
+REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
@@ -32,7 +32,7 @@ ifeq ($(PG91),yes)
 all: $(EXTENSION)--$(EXTVERSION).sql
 
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META)
-	$(SED) -e 's/$$Id$$/$(EXTREVISION)/' $< > $@
+	$(SED) -e 's|$$Id$$|$(REVISION)|' $< > $@
 
 $(META): $(META).in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
