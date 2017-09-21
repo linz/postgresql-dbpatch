@@ -51,6 +51,10 @@ matrix:
         - POSTGRESQL=9.6
 
 
+before_install:
+  # These are needed to test Debian package build
+  - sudo apt-get install debhelper fakeroot postgresql-server-dev-all
+
 script:
   - make
   - sudo make install
