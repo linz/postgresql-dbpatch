@@ -62,4 +62,4 @@ script:
 
   # Test build and install from package
   - PG_SUPPORTED_VERSIONS=${POSTGRESQL} make deb
-  - sudo dpkg -i ./postgresql-${POSTGRESQL}-dbpatch_*.deb
+  - sudo dpkg -i ../postgresql-${POSTGRESQL}-dbpatch_*.deb
