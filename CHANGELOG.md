@@ -1,10 +1,12 @@
 # Change Log
 
-All notable changes for the PostgreSQL dbpatch extension are documented 
+All notable changes for the PostgreSQL dbpatch extension are documented
 in this file.
 
-## [1.1.1dev] - 2017-MM-DD
-### Changed
+## [1.1.1] - 2017-09-26
+### Fixed
+- Do not install META.json
+- Fix revision detection from git tags containing slashes
 
 ## [1.1.0] - 2017-09-18
 ### Changed
