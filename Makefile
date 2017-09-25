@@ -11,7 +11,7 @@ SED = sed
 
 UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0
 
-DATA_built = $(EXTENSION)--$(EXTVERSION).sql $(META) \
+DATA_built = $(EXTENSION)--$(EXTVERSION).sql \
   $(wildcard upgrade-scripts/*--*.sql)
 DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
