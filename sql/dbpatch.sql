@@ -14,18 +14,18 @@
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION dbpatch" to load this file. \quit
 
-CREATE TABLE IF NOT EXISTS applied_patches (
+CREATE TABLE IF NOT EXISTS @extschema@.applied_patches (
     patch_name TEXT NOT NULL PRIMARY KEY,
     datetime_applied TIMESTAMP NOT NULL DEFAULT now(),
     patch_sql TEXT[] NOT NULL
 );
 
-COMMENT ON TABLE applied_patches
+COMMENT ON TABLE @extschema@.applied_patches
   IS 'dbpatch versioning data';
   
-SELECT pg_catalog.pg_extension_config_dump('applied_patches', '');
+SELECT pg_catalog.pg_extension_config_dump('@extschema@.applied_patches', '');
 
-CREATE OR REPLACE FUNCTION apply_patch(
+CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,
     p_patch_sql  TEXT[]
 )
@@ -76,7 +76,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION apply_patch(
+CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,
     p_patch_sql  TEXT
 )

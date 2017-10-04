@@ -1,4 +1,6 @@
-EXTVERSION   = 1.2.0dev
+
+VER   = 1.2.0dev
+EXTVERSION = $(VER)
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 META         = META.json
@@ -87,3 +89,12 @@ installcheck-upgrade:
 
 .PHONY: testdeps
 testdeps: test/sql/preparedb
+
+$(EXTENSION)-$(VER).sql: $(EXTENSION)--$(VER).sql Makefile sql/noextension.sql.in
+	echo "BEGIN;" > $@
+	cat sql/noextension.sql.in >> $@
+	grep -v 'CREATE EXTENSION' $< \
+  | grep -v 'pg_extension_config_dump' \
+  | sed -e 's/@extschema@/_patches/' \
+	>> $@
+	echo "COMMIT;" >> $@
