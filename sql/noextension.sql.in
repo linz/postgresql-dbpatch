@@ -1,0 +1,14 @@
+-- This file can only be used when 'dbpatch' is not
+-- installed as an extension
+DO $$
+BEGIN
+IF EXISTS (
+  SELECT * FROM pg_catalog.pg_extension WHERE extname = 'dbpatch'
+)
+THEN
+  RAISE EXCEPTION 'dbpatch is installed as an extension';
+END IF;
+END
+$$ LANGUAGE 'plpgsql';
+
+CREATE SCHEMA IF NOT EXISTS _patches;
