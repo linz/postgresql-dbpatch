@@ -1,10 +1,11 @@
 
-VER   = 1.2.0dev
-EXTVERSION = $(VER)
+EXTVERSION = 1.2.0dev
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
+
+TEMPLATE_SQL_INSTALLDIR = $(DESTDIR)/usr/share/dbpatch/sql/
 
 TGT_VERSION=$(subst dev,,$(EXTVERSION))
 PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/\.sql//' | grep -Fv $(TGT_VERSION) | sort -n | tail -1)
@@ -13,7 +14,11 @@ SED = sed
 
 UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0
 
-DATA_built = $(EXTENSION)--$(EXTVERSION).sql \
+SCRIPTS_built = $(EXTENSION)-loader
+
+DATA_built = \
+  $(EXTENSION)--$(EXTVERSION).sql \
+  $(EXTENSION)-$(EXTVERSION).sql.tpl \
   $(wildcard upgrade-scripts/*--*.sql)
 DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
@@ -90,11 +95,14 @@ installcheck-upgrade:
 .PHONY: testdeps
 testdeps: test/sql/preparedb
 
-$(EXTENSION)-$(VER).sql: $(EXTENSION)--$(VER).sql Makefile sql/noextension.sql.in
+$(EXTENSION)-$(EXTVERSION).sql.tpl: $(EXTENSION)--$(EXTVERSION).sql Makefile sql/noextension.sql.in
 	echo "BEGIN;" > $@
 	cat sql/noextension.sql.in >> $@
 	grep -v 'CREATE EXTENSION' $< \
   | grep -v 'pg_extension_config_dump' \
-  | sed -e 's/@extschema@/_patches/' \
 	>> $@
 	echo "COMMIT;" >> $@
+
+$(EXTENSION)-loader: $(EXTENSION)-loader.sh Makefile
+	cat $< > $@
+	chmod +x $@
