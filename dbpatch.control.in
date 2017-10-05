@@ -2,4 +2,5 @@
 comment = 'PostgreSQL database patch change management extension'
 default_version = '@@VERSION@@'
 relocatable = false
+schema = '_patches'
 
