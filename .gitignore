@@ -10,6 +10,8 @@ regression.out
 META.json
 dbpatch.control
 test/sql/preparedb
+dbpatch-loader
+*.tpl
 
 # Editor Backup #
 #################
