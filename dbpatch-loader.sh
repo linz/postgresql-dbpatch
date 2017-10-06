@@ -39,7 +39,7 @@ fi
 echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
 
 if test "${EXT_MODE}" = 'on'; then
-  psql -tAc "CREATE EXTENSION dbpatch VERSION '${VER}' SCHEMA ${TGT_SCHEMA}"
+  psql -tAc "CREATE EXTENSION ${EXT_NAME} VERSION '${VER}' SCHEMA ${TGT_SCHEMA}"
 else
   cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g" |
   psql --set ON_ERROR_STOP=1 > /dev/null

@@ -11,4 +11,4 @@ END IF;
 END
 $$ LANGUAGE 'plpgsql';
 
-CREATE SCHEMA IF NOT EXISTS _patches;
+CREATE SCHEMA IF NOT EXISTS @extschema@;
