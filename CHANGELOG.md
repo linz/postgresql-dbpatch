@@ -5,6 +5,9 @@ in this file.
 
 ## [1.2.0dev] - 2017-MM-DD
 ### Changed
+- Allow loading dbpatch w/out system support (#13)
+### Added
+- New `dbpatch-loader` utility script (#14)
 
 ## [1.1.0] - 2017-09-18
 ### Changed
