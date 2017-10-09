@@ -94,6 +94,11 @@ so:
 
     PGOPTIONS=--search_path=extensions psql -d mydb -f dbpatch.sql
 
+To simplify the above tasks you may use the `dbpatch-loader` script
+which is installed in `pg_config --bindir`. Syntax is:
+
+    dbpatch-loader [--no-extension] [--version <ver>] <dbname> [<schema>]
+
 Dependencies
 ------------
 The `dbpatch` extension has no dependencies other than PostgreSQL and PL/PgSQL
