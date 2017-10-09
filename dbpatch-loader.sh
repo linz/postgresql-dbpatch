@@ -39,7 +39,35 @@ fi
 echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
 
 if test "${EXT_MODE}" = 'on'; then
-  psql -tAc "CREATE EXTENSION ${EXT_NAME} VERSION '${VER}' SCHEMA ${TGT_SCHEMA}"
+  cat <<EOF | psql -tA
+DO \$\$
+  DECLARE
+    rec record;
+  BEGIN
+
+    SELECT n.nspname, e.extversion
+      INTO rec
+      FROM pg_catalog.pg_extension e,
+           pg_catalog.pg_namespace n
+      WHERE e.extname = 'dbpatch'
+        AND n.oid = e.extnamespace
+    ;
+
+    IF rec IS NULL THEN
+      CREATE SCHEMA IF NOT EXISTS "${TGT_SCHEMA}";
+      CREATE EXTENSION ${EXT_NAME}
+        VERSION '${VER}'
+        SCHEMA ${TGT_SCHEMA};
+    ELSE
+      IF rec.nspname != '${TGT_SCHEMA}' THEN
+        RAISE EXCEPTION 'dbpatch is already installed in schema %',
+          rec.nspname;
+      END IF;
+      ALTER EXTENSION ${EXT_NAME} UPDATE TO '${VER}';
+    END IF;
+  END
+\$\$ LANGUAGE 'plpgsql';
+EOF
 else
   cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g" |
   psql --set ON_ERROR_STOP=1 > /dev/null
