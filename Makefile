@@ -84,6 +84,8 @@ test/sql/preparedb: test/sql/preparedb.in
         UPGRADE_FROM=""; \
       fi; \
       $(SED) -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
+	  elif test "${PREPAREDB_NOEXTENSION}" = 1; then \
+      grep -v dbpatch; \
     else \
       cat; \
     fi | \
@@ -91,6 +93,27 @@ test/sql/preparedb: test/sql/preparedb.in
 
 installcheck-upgrade:
 	PREPAREDB_UPGRADE=1 make installcheck
+
+installcheck-loader: dbpatch-loader
+	PREPAREDB_NOEXTENSION=1 make test/sql/preparedb
+	dropdb --if-exists contrib_regression
+	createdb contrib_regression
+	`pg_config --bindir`/dbpatch-loader $(DBPATCH_LOADER_OPTS) contrib_regression
+	$(pg_regress_installcheck) $(REGRESS_OPTS) --use-existing $(REGRESS)
+	dropdb contrib_regression
+
+installcheck-loader-noext: dbpatch-loader
+	$(MAKE) installcheck-loader DBPATCH_LOADER_OPTS=--no-extension
+
+check: check-noext
+
+check-noext: dbpatch-loader
+	PREPAREDB_NOEXTENSION=1 $(MAKE) test/sql/preparedb
+	dropdb --if-exists contrib_regression
+	createdb contrib_regression
+	DBPATCH_EXT_DIR=.  ./dbpatch-loader --no-extension contrib_regression
+	$(pg_regress_installcheck) $(REGRESS_OPTS) --use-existing $(REGRESS)
+	dropdb contrib_regression
 
 .PHONY: testdeps
 testdeps: test/sql/preparedb
