@@ -16,6 +16,10 @@ UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0
 
 SCRIPTS_built = $(EXTENSION)-loader
 
+# This is a workaround for a bug in "install" rule in
+# PostgreSQL 9.4 and lower
+SCRIPTS = $(SCRIPTS_built)
+
 DATA_built = \
   $(EXTENSION)--$(EXTVERSION).sql \
   $(EXTENSION)-$(EXTVERSION).sql.tpl \
