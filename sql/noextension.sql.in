@@ -2,13 +2,20 @@
 -- installed as an extension
 DO $$
 BEGIN
-IF EXISTS (
-  SELECT * FROM pg_catalog.pg_extension WHERE extname = 'dbpatch'
-)
-THEN
-  RAISE EXCEPTION 'dbpatch is installed as an extension';
-END IF;
+  IF EXISTS (
+    SELECT * FROM pg_catalog.pg_extension WHERE extname = 'dbpatch'
+  )
+  THEN
+    RAISE EXCEPTION 'dbpatch is installed as an extension';
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT * FROM pg_catalog.pg_namespace WHERE nspname =
+    '@extschema@'
+  )
+  THEN
+    CREATE SCHEMA @extschema@;
+  END IF;
 END
 $$ LANGUAGE 'plpgsql';
 
-CREATE SCHEMA IF NOT EXISTS @extschema@;
