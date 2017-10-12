@@ -69,7 +69,13 @@ DO \$\$
     ;
 
     IF rec IS NULL THEN
-      CREATE SCHEMA IF NOT EXISTS "${TGT_SCHEMA}";
+      IF NOT EXISTS (
+        SELECT * FROM pg_catalog.pg_namespace
+        WHERE nspname = '${TGT_SCHEMA}'
+      )
+      THEN
+        CREATE SCHEMA "${TGT_SCHEMA}";
+      END IF;
       CREATE EXTENSION ${EXT_NAME}
         VERSION '${VER}'
         SCHEMA ${TGT_SCHEMA};
