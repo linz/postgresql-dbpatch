@@ -76,6 +76,23 @@ DO \$\$
       THEN
         CREATE SCHEMA "${TGT_SCHEMA}";
       END IF;
+      -- not installed as an extension, let's see if it is
+      -- installed as unpackaged
+      SELECT n.nspname
+        INTO rec
+        FROM pg_catalog.pg_class c,
+             pg_catalog.pg_namespace n,
+             pg_catalog.pg_proc  p
+        WHERE c.relnamespace = n.oid
+        AND p.pronamespace = n.oid
+        AND c.relname = 'applied_patches'
+        AND p.proname = 'apply_patch';
+      IF rec IS NOT NULL THEN
+        RAISE EXCEPTION 'dbpatch is already installed as unpackaged in schema %',
+          rec.nspname
+        USING HINT = 'Try CREATE EXTENSION dbpatch FROM unpackaged '
+                     'or pass --no-extension switch to loader';
+      END IF;
       CREATE EXTENSION ${EXT_NAME}
         VERSION '${VER}'
         SCHEMA ${TGT_SCHEMA};
