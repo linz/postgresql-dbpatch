@@ -42,8 +42,9 @@ PG91         = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo no
 ifeq ($(PG91),yes)
 all: $(EXTENSION)--$(EXTVERSION).sql
 
-$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META)
-	$(SED) -e 's|$$Id$$|$(REVISION)|' $< > $@
+$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
+	$(SED) -e 's|\$$Id\$$|$(REVISION)|' $< | \
+	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
 
 $(META): $(META).in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@

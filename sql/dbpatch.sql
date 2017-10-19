@@ -89,3 +89,12 @@ $$
     LANGUAGE sql;
 
 
+CREATE OR REPLACE FUNCTION @extschema@.dbpatch_version()
+RETURNS
+    TEXT AS
+$$
+    SELECT '@@VERSION@@ $Id$'::text;
+$$
+    LANGUAGE sql;
+
+
