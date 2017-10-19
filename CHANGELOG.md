@@ -8,6 +8,7 @@ in this file.
 - Allow loading dbpatch w/out system support (#13)
 ### Added
 - New `dbpatch-loader` utility script (#14)
+- New `dbpatch_version()` function (#17)
 
 ## [1.1.0] - 2017-09-18
 ### Changed
