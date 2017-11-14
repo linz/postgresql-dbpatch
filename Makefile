@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.2.0
+EXTVERSION = 1.3.0dev
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 META         = META.json
@@ -12,7 +12,7 @@ PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/
 
 SED = sed
 
-UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 1.2.0dev
+UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 1.2.0dev 1.2.0
 
 SCRIPTS_built = $(EXTENSION)-loader
 
