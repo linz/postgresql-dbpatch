@@ -3,6 +3,8 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
+## [1.2.1] - YYYY-MM-DD
+
 ## [1.2.0] - 2017-11-15
 ### Changed
 - Allow loading dbpatch w/out system support (#13)
