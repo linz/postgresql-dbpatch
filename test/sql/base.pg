@@ -1,0 +1,35 @@
+\set ECHO none
+--------------------------------------------------------------------------------
+--
+-- postgresql-dbpatch - PostgreSQL database patch change management extension
+--
+-- Copyright 2018 Crown copyright (c)
+-- Land Information New Zealand and the New Zealand Government.
+-- All rights reserved
+--
+-- This software is released under the terms of the new BSD license.  See the
+-- LICENSE file for more information.
+--
+--------------------------------------------------------------------------------
+-- Provide unit testing for dbpatch using pgTAP
+--------------------------------------------------------------------------------
+
+\i test/sql/preparedb
+
+BEGIN;
+
+SELECT plan(5);
+
+SELECT is(apply_patch('test patch 1', ARRAY['SELECT 1', 'SELECT 2']),
+  't', 'array of string patches');
+SELECT is(apply_patch('test patch 2', 'SELECT 1'),
+  't', 'string patch');
+SELECT is(apply_patch('test patch 2', 'SELECT 1'),
+  'f', 'string patch already applied');
+SELECT throws_like($$SELECT apply_patch('test bad patch SQL', 'SELET 1')$$,
+  '%bad patch SQL%', 'bad patch syntax throws');
+
+SELECT has_function( 'dbpatch_version' );
+
+ROLLBACK;
+

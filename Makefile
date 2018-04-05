@@ -28,7 +28,6 @@ DOCS         = $(wildcard doc/*.md)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-language=plpgsql
-REGRESS_PREP = testdeps
 
 #
 # Uncoment the MODULES line if you are adding C files
@@ -96,6 +95,8 @@ test/sql/preparedb: test/sql/preparedb.in
     fi | \
 	  $(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
 
+installcheck: testdeps
+
 installcheck-upgrade:
 	PREPAREDB_UPGRADE=1 make installcheck
 
@@ -104,7 +105,7 @@ installcheck-loader: dbpatch-loader
 	dropdb --if-exists contrib_regression
 	createdb contrib_regression
 	PATH="$$PATH:$(LOCAL_BINDIR)" dbpatch-loader $(DBPATCH_LOADER_OPTS) contrib_regression
-	$(pg_regress_installcheck) $(REGRESS_OPTS) --use-existing $(REGRESS)
+	pg_prove -d contrib_regression test/sql
 	dropdb contrib_regression
 
 installcheck-loader-noext: dbpatch-loader
@@ -117,8 +118,7 @@ check-noext: dbpatch-loader
 	dropdb --if-exists contrib_regression
 	createdb contrib_regression
 	DBPATCH_EXT_DIR=.  ./dbpatch-loader --no-extension contrib_regression
-	$(pg_regress_installcheck) $(REGRESS_OPTS) \
-		--use-existing $(REGRESS) || { cat regression.diff; false; }
+	pg_prove -d contrib_regression test/sql
 	dropdb contrib_regression
 
 .PHONY: testdeps
