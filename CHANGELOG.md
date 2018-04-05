@@ -4,6 +4,9 @@ All notable changes for the PostgreSQL dbpatch extension are documented
 in this file.
 
 ## [1.3.0] - YYYY-MM-DD
+### Changed
+- Loader script now installs by default in /usr/local/bin/
+  and does not depend on `pg_config` anymore (#22)
 
 ## [1.2.0] - 2017-11-15
 ### Changed
