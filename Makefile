@@ -2,6 +2,12 @@
 EXTVERSION = 1.3.0dev
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
+PREFIX ?= /usr/local
+LOCAL_BINDIR = $(PREFIX)/bin
+LOCAL_SHAREDIR = $(PREFIX)/share/$(EXTENSION)
+LOCAL_SHARES = $(EXTENSION)-$(EXTVERSION).sql.tpl
+LOCAL_BINS = $(EXTENSION)-loader
+
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
 
@@ -14,15 +20,8 @@ SED = sed
 
 UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 1.2.0dev 1.2.0
 
-SCRIPTS_built = $(EXTENSION)-loader
-
-# This is a workaround for a bug in "install" rule in
-# PostgreSQL 9.4 and lower
-SCRIPTS = $(SCRIPTS_built)
-
 DATA_built = \
   $(EXTENSION)--$(EXTVERSION).sql \
-  $(EXTENSION)-$(EXTVERSION).sql.tpl \
   $(wildcard upgrade-scripts/*--*.sql)
 DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
@@ -53,6 +52,7 @@ $(EXTENSION).control: $(EXTENSION).control.in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
  
 EXTRA_CLEAN = \
+  $(LOCAL_BINS) \
 	sql/$(EXTENSION)--$(EXTVERSION).sql \
 	$(EXTENSION).control \
 	$(META) upgrade-scripts
@@ -71,7 +71,7 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)--$(EXTVERSION)next.sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)next--$(EXTVERSION).sql
 
-all: upgrade-scripts
+all: upgrade-scripts $(LOCAL_SHARES) $(LOCAL_BINS)
 
 deb:
 	pg_buildext updatecontrol
@@ -132,5 +132,18 @@ $(EXTENSION)-$(EXTVERSION).sql.tpl: $(EXTENSION)--$(EXTVERSION).sql Makefile sql
 	echo "COMMIT;" >> $@
 
 $(EXTENSION)-loader: $(EXTENSION)-loader.sh Makefile
-	cat $< > $@
+	cat $< | sed 's|@@LOCAL_SHAREDIR@@|$(LOCAL_SHAREDIR)|' > $@
 	chmod +x $@
+
+install: local-install
+uninstall: local-uninstall
+
+local-install:
+	$(INSTALL) -d $(DESTDIR)$(LOCAL_BINDIR)
+	$(INSTALL) $(LOCAL_BINS) $(DESTDIR)$(LOCAL_BINDIR)
+	$(INSTALL) -d $(DESTDIR)$(LOCAL_SHAREDIR)
+	$(INSTALL) -m 644 $(LOCAL_SHARES) $(DESTDIR)$(LOCAL_SHAREDIR)
+
+local-uninstall:
+	for b in $(LOCAL_BINS); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
+	for b in $(LOCAL_SHARES); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
