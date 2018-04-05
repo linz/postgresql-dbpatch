@@ -23,6 +23,7 @@ debian/postgresql*-dbpatch/
 debian/postgresql*dbpatch.substvars
 debian/postgresql*dbpatch.debhelper
 debian/files
+debian/.debhelper/
 
 # Packages #
 ############
