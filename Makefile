@@ -103,7 +103,7 @@ installcheck-loader: dbpatch-loader
 	PREPAREDB_NOEXTENSION=1 make test/sql/preparedb
 	dropdb --if-exists contrib_regression
 	createdb contrib_regression
-	`pg_config --bindir`/dbpatch-loader $(DBPATCH_LOADER_OPTS) contrib_regression
+	PATH="$$PATH:$(LOCAL_BINDIR)" dbpatch-loader $(DBPATCH_LOADER_OPTS) contrib_regression
 	$(pg_regress_installcheck) $(REGRESS_OPTS) --use-existing $(REGRESS)
 	dropdb contrib_regression
 
