@@ -117,7 +117,8 @@ check-noext: dbpatch-loader
 	dropdb --if-exists contrib_regression
 	createdb contrib_regression
 	DBPATCH_EXT_DIR=.  ./dbpatch-loader --no-extension contrib_regression
-	$(pg_regress_installcheck) $(REGRESS_OPTS) --use-existing $(REGRESS)
+	$(pg_regress_installcheck) $(REGRESS_OPTS) \
+		--use-existing $(REGRESS) || { cat regression.diff; false; }
 	dropdb contrib_regression
 
 .PHONY: testdeps
