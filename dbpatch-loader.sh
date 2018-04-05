@@ -4,7 +4,7 @@ TGT_SCHEMA=
 TGT_DB=
 EXT_MODE=on
 EXT_NAME=dbpatch
-EXT_DIR=`pg_config --sharedir`/extension/
+EXT_DIR=@@LOCAL_SHAREDIR@@
 TPL_FILE=
 VER=
 
