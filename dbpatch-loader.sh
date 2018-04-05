@@ -47,7 +47,7 @@ fi
 TPL_FILE=${EXT_DIR}/${EXT_NAME}-${VER}.sql.tpl
 
 if test -z "$TGT_SCHEMA"; then
-  TGT_SCHEMA=`psql -tAc "select current_schema()"`
+  TGT_SCHEMA=`psql -tXAc "select current_schema()"`
   if test -z "$TGT_SCHEMA"; then exit 1; fi # failed connection to db ?
 fi
 
