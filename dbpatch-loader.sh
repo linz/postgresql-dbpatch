@@ -54,7 +54,7 @@ fi
 echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
 
 if test "${EXT_MODE}" = 'on'; then
-  cat <<EOF | psql -tA
+  cat <<EOF | psql -XtA
 DO \$\$
   DECLARE
     rec record;
@@ -108,5 +108,5 @@ DO \$\$
 EOF
 else
   cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g" |
-  psql --set ON_ERROR_STOP=1 > /dev/null
+  psql -X --set ON_ERROR_STOP=1 > /dev/null
 fi
