@@ -54,7 +54,7 @@ fi
 echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
 
 if test "${EXT_MODE}" = 'on'; then
-  cat <<EOF | psql -XtA
+  cat <<EOF | psql -XtA -o /dev/null
 DO \$\$
   DECLARE
     rec record;
