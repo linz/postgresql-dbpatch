@@ -8,6 +8,19 @@ LOCAL_SHAREDIR = $(PREFIX)/share/$(EXTENSION)
 LOCAL_SHARES = $(EXTENSION)-$(EXTVERSION).sql.tpl
 LOCAL_BINS = $(EXTENSION)-loader
 
+DISTFILES = \
+        doc \
+        sql \
+        test \
+        LICENSE \
+        Makefile \
+        $(META) \
+        $(META).in \
+        README.md \
+        dbpatch-loader.sh \
+        dbpatch.control.in \
+        $(NULL)
+
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
 
@@ -148,3 +161,9 @@ local-install:
 local-uninstall:
 	for b in $(LOCAL_BINS); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
 	for b in $(LOCAL_SHARES); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
+
+dist: distclean $(DISTFILES)
+	mkdir $(EXTENSION)-$(EXTVERSION)
+	cp -r $(DISTFILES) $(EXTENSION)-$(EXTVERSION)
+	tar czf $(EXTENSION)-$(EXTVERSION).tar.gz $(EXTENSION)-$(EXTVERSION)
+	rm -rf $(EXTENSION)-$(EXTVERSION)
