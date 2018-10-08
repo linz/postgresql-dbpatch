@@ -62,6 +62,7 @@ script:
   - PGPORT=5432 make installcheck || { cat regression.diffs; false; }
   - PGPORT=5432 make installcheck-loader || { cat regression.diffs; false; }
   - PGPORT=5432 make installcheck-loader-noext || { cat regression.diffs; false; }
+  - make dist
 
   # Test upgrades from all tagged versions
   - PGPORT=5432 test/ci/test_all_upgrades.sh
