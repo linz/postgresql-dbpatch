@@ -61,8 +61,8 @@ already been applied it will return false. e.g
 
 If the SQL statement can not be executed a general exception with be thrown.
 
-There is also an overloaded version of the "apply_patch" function that allows
-you to apply multiple SQL statements in one patch using an array of SQL statements
+An overloaded version of the "apply_patch" function allows you to apply
+multiple SQL statements in one patch using an array of SQL statements
 as the second parameter:
 
     #= SELECT apply_patch(
@@ -74,6 +74,27 @@ as the second parameter:
        );
     
     INFO:  Applying patch myapp 1.0.1 - create foo table and index
+     t
+    (1 row)
+
+A `reapply_patch` function exists to force re-application of a
+previously applied patch. This may be useful if the patch code
+depends on data which changes over time. Example:
+
+    #= SELECT apply_patch(
+               'myapp 1.0.1 - reindex foo',
+               'REINDEX TABLE foo'
+           );
+    INFO:  Applying patch myapp 1.0.1 - reindex foo
+     apply_patch
+    -------------
+     t
+    (1 row)
+
+    #= SELECT reapply_patch('myapp 1.0.1 - reindex foo');
+    INFO:  Applying patch myapp 1.0.1 - reindex foo
+     reapply_patch
+    ---------------
      t
     (1 row)
 
