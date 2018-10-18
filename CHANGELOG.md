@@ -7,6 +7,8 @@ in this file.
 ### Changed
 - Loader script now installs by default in /usr/local/bin/
   and does not depend on `pg_config` anymore (#22)
+### Added
+- New `reapply_patch` function (#30)
 
 ## [1.2.0] - 2017-11-15
 ### Changed

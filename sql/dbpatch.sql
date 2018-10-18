@@ -76,6 +76,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION @extschema@.reapply_patch(
+    p_patch_name TEXT
+)
+RETURNS
+    BOOLEAN AS
+$$
+-- $Id$
+  WITH matches AS (
+      DELETE FROM @extschema@.applied_patches
+      WHERE patch_name = p_patch_name
+      RETURNING patch_sql
+  )
+  SELECT @extschema@.apply_patch(p_patch_name, patch_sql)
+  FROM matches;
+$$ LANGUAGE sql VOLATILE;
+
 CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,
     p_patch_sql  TEXT
