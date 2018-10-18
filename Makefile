@@ -165,5 +165,5 @@ local-uninstall:
 dist: distclean $(DISTFILES)
 	mkdir $(EXTENSION)-$(EXTVERSION)
 	cp -r $(DISTFILES) $(EXTENSION)-$(EXTVERSION)
-	tar czf $(EXTENSION)-$(EXTVERSION).tar.gz $(EXTENSION)-$(EXTVERSION)
+	zip -r $(EXTENSION)-$(EXTVERSION).zip $(EXTENSION)-$(EXTVERSION)
 	rm -rf $(EXTENSION)-$(EXTVERSION)
