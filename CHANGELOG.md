@@ -3,6 +3,8 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
+## [1.4.0dev] - 2018-MM-DD
+
 ## [1.3.0] - 2018-10-18
 ### Changed
 - Loader script now installs by default in /usr/local/bin/
