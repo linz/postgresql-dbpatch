@@ -28,7 +28,7 @@ while test -n "$1"; do
 done
 
 if test -z "$TGT_DB"; then
-  echo "Usage: $0 [--no-extension] [--version <ver>] <dbname> [<schema>]" >&2
+  echo "Usage: $0 [--no-extension] [--version <ver>] { <dbname> | - } [<schema>]" >&2
   exit 1
 fi
 
@@ -47,14 +47,20 @@ fi
 TPL_FILE=${EXT_DIR}/${EXT_NAME}-${VER}.sql.tpl
 
 if test -z "$TGT_SCHEMA"; then
+  if test "$TGT_DB" = "-"; then
+    echo "Target schema is required in standard output mode" >&2
+    exit 1
+  fi
   TGT_SCHEMA=`psql -tXAc "select current_schema()"`
   if test -z "$TGT_SCHEMA"; then exit 1; fi # failed connection to db ?
 fi
 
-echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
+echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})" >&2
+
+{
 
 if test "${EXT_MODE}" = 'on'; then
-  cat <<EOF | psql -XtA -o /dev/null
+  cat <<EOF
 DO \$\$
   DECLARE
     rec record;
@@ -106,7 +112,11 @@ DO \$\$
   END
 \$\$ LANGUAGE 'plpgsql';
 EOF
+else # EXT_MODE off
+  cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g"
+fi
+} | if [ "$TGT_DB" = "-" ]; then
+  cat
 else
-  cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g" |
-  psql -X --set ON_ERROR_STOP=1 > /dev/null
+  psql -XtA --set ON_ERROR_STOP=1 -o /dev/null
 fi
