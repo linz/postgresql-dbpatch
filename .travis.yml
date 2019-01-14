@@ -39,6 +39,14 @@ matrix:
       env:
         - POSTGRESQL=9.6
 
+    - addons:
+        postgresql: 10
+        apt:
+          packages:
+            - postgresql-10-pgtap
+      env:
+        - POSTGRESQL=10
+
 
 before_install:
   # These are needed to test Debian package build
@@ -49,15 +57,21 @@ before_install:
 
 script:
   - make
+  # Set PGPORT
+  - export PGPORT=`pg_lsclusters  | grep ' online ' | tail -1 | awk '{print $3}'`
+  # Pre-install tests
   - make check
+  # Install
   - sudo env "PATH=$PATH" make install
-  - PGPORT=5432 make installcheck || { cat regression.diffs; false; }
-  - PGPORT=5432 make installcheck-loader || { cat regression.diffs; false; }
-  - PGPORT=5432 make installcheck-loader-noext || { cat regression.diffs; false; }
+  # Post-install tests
+  - make installcheck || { cat regression.diffs; false; }
+  - make installcheck-loader || { cat regression.diffs; false; }
+  - make installcheck-loader-noext || { cat regression.diffs; false; }
+  # Packaging tests
   - make dist
 
   # Test upgrades from all tagged versions
-  - PGPORT=5432 test/ci/test_all_upgrades.sh
+  - test/ci/test_all_upgrades.sh
 
   # Test build and install from package
   - PG_SUPPORTED_VERSIONS=${POSTGRESQL} make deb
