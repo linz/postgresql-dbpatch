@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.4.0dev
+EXTVERSION = 1.4.0
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 PREFIX ?= /usr/local
@@ -31,7 +31,9 @@ PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/
 
 SED = sed
 
-UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 1.2.0dev 1.2.0
+UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
+  1.2.0dev 1.2.0 \
+  1.3.0dev 1.3.0
 
 DATA_built = \
   $(EXTENSION)--$(EXTVERSION).sql \
