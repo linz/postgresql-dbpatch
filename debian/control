@@ -45,3 +45,21 @@ Description: PostgreSQL database patch change management extension. This
  extension supports conducting database changes and deploying them in a robust
  and automated way.
 
+Package: postgresql-10-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-10
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+
+Package: postgresql-11-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-11
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+
