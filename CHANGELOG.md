@@ -3,8 +3,6 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
-## [1.4.1dev] - 2019-MM-DD
-
 ## [1.4.0] - 2019-01-14
 ### Improved
 - Add stdout support in `dbpatch-loader` (#35)

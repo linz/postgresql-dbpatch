@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.4.1dev
+EXTVERSION = 1.4.0
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 PREFIX ?= /usr/local
