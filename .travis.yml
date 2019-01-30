@@ -12,6 +12,7 @@ env:
     - PG=9.6
     - PG=10
     - PG=11
+    - PG=12
 
 before_install:
   - sudo apt-get -y --purge remove postgresql libpq-dev libpq5
