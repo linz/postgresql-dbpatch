@@ -36,9 +36,11 @@ UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
   1.3.0dev 1.3.0 \
   1.4.0dev 1.4.0
 
+UPGRADE_SCRIPTS_BUILT = $(patsubst %,upgrade-scripts/$(EXTENSION)--%--$(EXTVERSION).sql,$(UPGRADEABLE_VERSIONS))
+
 DATA_built = \
   $(EXTENSION)--$(EXTVERSION).sql \
-  $(wildcard upgrade-scripts/*--*.sql)
+  $(UPGRADE_SCRIPTS_BUILT)
 DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
 TESTS        = $(wildcard test/sql/*.sql)
@@ -75,6 +77,8 @@ endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
+
+$(UPGRADE_SCRIPTS_BUILT): upgrade-scripts
 
 .PHONY: upgrade-scripts
 upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
