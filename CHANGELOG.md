@@ -4,6 +4,8 @@ All notable changes for the PostgreSQL dbpatch extension are documented
 in this file.
 
 ## [1.4.1dev] - 2019-MM-DD
+### Fixed
+- Installation of upgrade scripts on `make install` (#44)
 
 ## [1.4.0] - 2019-01-14
 ### Improved
