@@ -6,6 +6,7 @@ in this file.
 ## [1.5.0dev] - 2019-MM-DD
 ### Improved
 - Progress message from `dbpatch-loader` (#47)
+- Make patches application messages hushable (#48)
 
 ## [1.4.0] - 2019-01-14
 ### Improved

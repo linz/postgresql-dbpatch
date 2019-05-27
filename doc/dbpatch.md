@@ -9,7 +9,7 @@ Synopsis
 
     #= SELECT apply_patch('myapp 1.0.1 - create foo table', 'CREATE TABLE foo (bar TEXT)');
 
-    INFO:  Applying patch myapp 1.0.1 - create foo table
+    NOTICE:  Applying patch myapp 1.0.1 - create foo table
      apply_patch 
     -------------
      t
@@ -31,7 +31,7 @@ Applying a patch to the database is easy - just run the "apply_patch" function:
 
     #= SELECT apply_patch('myapp 1.0.1 - create foo table', 'CREATE TABLE foo (bar TEXT)');
     
-    INFO:  Applying patch myapp 1.0.1 - create foo table
+    NOTICE:  Applying patch myapp 1.0.1 - create foo table
      apply_patch 
     -------------
      t
@@ -53,7 +53,7 @@ already been applied it will return false. e.g
 
     #= SELECT apply_patch('myapp 1.0.1 - create foo table', 'CREATE TABLE foo (bar TEXT)');
     
-    INFO:  Patch myapp 1.0.1 - create foo table is already applied
+    NOTICE:  Patch myapp 1.0.1 - create foo table is already applied
      apply_patch 
     -------------
      f
@@ -73,7 +73,7 @@ as the second parameter:
            ]
        );
     
-    INFO:  Applying patch myapp 1.0.1 - create foo table and index
+    NOTICE:  Applying patch myapp 1.0.1 - create foo table and index
      t
     (1 row)
 
@@ -85,14 +85,14 @@ depends on data which changes over time. Example:
                'myapp 1.0.1 - reindex foo',
                'REINDEX TABLE foo'
            );
-    INFO:  Applying patch myapp 1.0.1 - reindex foo
+    NOTICE:  Applying patch myapp 1.0.1 - reindex foo
      apply_patch
     -------------
      t
     (1 row)
 
     #= SELECT reapply_patch('myapp 1.0.1 - reindex foo');
-    INFO:  Applying patch myapp 1.0.1 - reindex foo
+    NOTICE:  Applying patch myapp 1.0.1 - reindex foo
      reapply_patch
     ---------------
      t
