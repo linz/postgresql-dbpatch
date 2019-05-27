@@ -56,7 +56,7 @@ if test -z "$TGT_SCHEMA"; then
   if test -z "$TGT_SCHEMA"; then exit 1; fi # failed connection to db ?
 fi
 
-echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})" >&2
+echo "Loading ${EXT_NAME} ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})" >&2
 
 {
 
