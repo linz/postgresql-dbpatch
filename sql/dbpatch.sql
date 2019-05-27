@@ -45,11 +45,11 @@ BEGIN
         WHERE  patch_name = p_patch_name
     )
     THEN
-        RAISE INFO 'Patch % is already applied', p_patch_name;
+        RAISE NOTICE 'Patch % is already applied', p_patch_name;
         RETURN FALSE;
     END IF;
     
-    RAISE INFO 'Applying patch %', p_patch_name;
+    RAISE NOTICE 'Applying patch %', p_patch_name;
     
     BEGIN
         FOR v_sql IN SELECT * FROM unnest(p_patch_sql) LOOP
