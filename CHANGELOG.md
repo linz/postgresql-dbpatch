@@ -3,10 +3,15 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
-## [1.5.0dev] - 2019-MM-DD
+## [1.5.0] - 2019-07-29
 ### Improved
 - Progress message from `dbpatch-loader` (#47)
-- Make patches application messages hushable (#48)
+- Send patch application messages to NOTICE channel instead of INFO (#48)
+- Allow overriding `PG_CONFIG` via env variable
+### Fixed
+- Handling of --version loader switch
+- Make sure all upgrade scripts are always installed
+- ALlow upgrading from 1.4.0
 
 ## [1.4.0] - 2019-01-14
 ### Improved
