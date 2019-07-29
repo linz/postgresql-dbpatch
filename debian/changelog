@@ -1,3 +1,9 @@
+postgresql-dbpatch (1.5.0-1linz~trusty1) trusty; urgency=medium
+
+  * New upstream version
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Mon, 29 Jul 2019 19:20:02 +0200
+
 postgresql-dbpatch (1.4.0-1linz~trusty1) trusty; urgency=medium
 
   * New upstream version
