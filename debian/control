@@ -9,6 +9,15 @@ Homepage: http://www.linz.govt.nz
 Vcs-Git: git://github.com/linz/postgresql-dbpatch.git
 Vcs-Browser: https://github.com/linz/postgresql-dbpatch
 
+Package: postgresql-9.3-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-9.3
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+
 Package: postgresql-9.4-dbpatch
 Architecture: all
 Depends: ${misc:Depends},
