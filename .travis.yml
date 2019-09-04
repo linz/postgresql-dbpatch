@@ -6,7 +6,6 @@ language: C++
 
 env:
   matrix:
-    - PG=9.3
     - PG=9.4
     - PG=9.5
     - PG=9.6
