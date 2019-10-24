@@ -57,6 +57,9 @@ jobs:
         export PATH=/usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
         sudo env "PATH=$PATH" make install
     - name: Test installation
+      env:
+        # Set PATH as postgresql-server-dev-all pretends version is 11
+        PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
       run: |
         # Post-install tests
         make installcheck || { cat regression.diffs; false; }
