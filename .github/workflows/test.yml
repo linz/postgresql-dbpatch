@@ -12,6 +12,9 @@ jobs:
         matrix:
             pg: [ '9.3', '9.4', '9.5', '9.6', '10', '11' ]
             os: [ ubuntu-18.04 ]
+    env:
+      # Set PATH as postgresql-server-dev-all pretends version is 11
+      PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
     - uses: actions/checkout@v1
     - name: Install dependencies
@@ -43,8 +46,6 @@ jobs:
         sudo -u postgres createuser -s root
     - name: Build
       run: |
-        # Set PATH as postgresql-server-dev-all pretends version is 11
-        export PATH=/usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
         # Build
         make
     - name: Test build
@@ -53,13 +54,8 @@ jobs:
         make check
     - name: Install
       run: |
-        # Set PATH as postgresql-server-dev-all pretends version is 11
-        export PATH=/usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
         sudo env "PATH=$PATH" make install
     - name: Test installation
-      env:
-        # Set PATH as postgresql-server-dev-all pretends version is 11
-        PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
       run: |
         # Post-install tests
         make installcheck || { cat regression.diffs; false; }
@@ -67,8 +63,6 @@ jobs:
         make installcheck-loader-noext || { cat regression.diffs; false; }
     - name: Test upgrades
       run: |
-        # Set PATH as postgresql-server-dev-all pretends version is 11
-        export PATH=/usr/lib/postgresql/${{ matrix.pg }}/bin:${PATH}
         # Test upgrades from all tagged versions
         sudo env "PATH=$PATH" test/ci/test_all_upgrades.sh
     - name: Test packaging
