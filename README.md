@@ -1,4 +1,5 @@
 [![Build Status](https://secure.travis-ci.org/linz/postgresql-dbpatch.svg)](http://travis-ci.org/linz/postgresql-dbpatch)
+[![Actions Status](https://github.com/linz/postgresql-dbpatch/workflows/test/badge.svg?branch=master)](https://github.com/linz/postgresql-dbpatch/actions)
 
 postgresql-dbpatch
 ==================
