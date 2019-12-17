@@ -9,32 +9,16 @@ Homepage: http://www.linz.govt.nz
 Vcs-Git: git://github.com/linz/postgresql-dbpatch.git
 Vcs-Browser: https://github.com/linz/postgresql-dbpatch
 
-Package: postgresql-9.4-dbpatch
+Package: dbpatch
 Architecture: all
-Depends: ${misc:Depends},
-         postgresql-9.4
+Depends: ${misc:Depends}
 Recommends:
 Description: PostgreSQL database patch change management extension. This
  extension supports conducting database changes and deploying them in a robust
  and automated way.
-
-Package: postgresql-9.5-dbpatch
-Architecture: all
-Depends: ${misc:Depends},
-         postgresql-9.5
-Recommends:
-Description: PostgreSQL database patch change management extension. This
- extension supports conducting database changes and deploying them in a robust
- and automated way.
-
-Package: postgresql-9.6-dbpatch
-Architecture: all
-Depends: ${misc:Depends},
-         postgresql-9.6
-Recommends:
-Description: PostgreSQL database patch change management extension. This
- extension supports conducting database changes and deploying them in a robust
- and automated way.
+ .
+ This package contains the schema loader usable to load the extension in any
+ PostgreSQL database mechanism withouth having access to the server filesystem
 
 Package: postgresql-10-dbpatch
 Architecture: all
@@ -44,12 +28,7 @@ Recommends:
 Description: PostgreSQL database patch change management extension. This
  extension supports conducting database changes and deploying them in a robust
  and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
 
-Package: postgresql-11-dbpatch
-Architecture: all
-Depends: ${misc:Depends},
-         postgresql-11
-Recommends:
-Description: PostgreSQL database patch change management extension. This
- extension supports conducting database changes and deploying them in a robust
- and automated way.

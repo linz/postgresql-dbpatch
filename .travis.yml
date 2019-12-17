@@ -59,6 +59,7 @@ script:
   # Test build and install from package
   - PG_SUPPORTED_VERSIONS=${PG} make deb
   - sudo dpkg -i ../postgresql-${PG}-dbpatch_*.deb
+  - sudo dpkg -i ../dbpatch_*.deb
 
 # vim: set ts=2 sts=2 sw=2 et:
 

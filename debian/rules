@@ -15,8 +15,18 @@ override_dh_auto_build:
 override_dh_auto_test:
 	# nothing to do here, see debian/tests/* instead
 
+NEWEST_POSTGRES_VERSION = $(shell pg_buildext supported-versions $(CURDIR) | tail -1)
+
 override_dh_auto_install:
 	+pg_buildext install $(CURDIR) . postgresql-%v-dbpatch
+	# Move the scripts only parts to separate package
+	mkdir -p $(CURDIR)/debian/dbpatch/usr/bin/
+	mkdir -p $(CURDIR)/debian/dbpatch/usr/share/
+	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/share/dbpatch/ \
+	   $(CURDIR)/debian/dbpatch/usr/share/
+	# Shall we copy instead of moving ?
+	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/bin/dbpatch-loader \
+	   $(CURDIR)/debian/dbpatch/usr/bin/
 
 
 %:

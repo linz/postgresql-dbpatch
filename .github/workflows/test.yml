@@ -71,3 +71,4 @@ jobs:
         # Test install from package
         PG_SUPPORTED_VERSIONS=${{ matrix.pg }} make deb
         sudo dpkg -i ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
+        sudo dpkg -i ../dbpatch_*.deb
