@@ -20,13 +20,13 @@ NEWEST_POSTGRES_VERSION = $(shell pg_buildext supported-versions $(CURDIR) | tai
 override_dh_auto_install:
 	+pg_buildext install $(CURDIR) . postgresql-%v-dbpatch
 	# Move the scripts only parts to separate package
-	mkdir -p $(CURDIR)/debian/dbpatch/usr/bin/
 	mkdir -p $(CURDIR)/debian/dbpatch/usr/share/
 	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/share/dbpatch/ \
 	   $(CURDIR)/debian/dbpatch/usr/share/
 	# Shall we copy instead of moving ?
-	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/bin/dbpatch-loader \
-	   $(CURDIR)/debian/dbpatch/usr/bin/
+	mkdir -p $(CURDIR)/debian/dbpatch/usr/
+	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/bin/ \
+	   $(CURDIR)/debian/dbpatch/usr/
 
 
 %:
