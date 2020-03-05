@@ -22,6 +22,7 @@ jobs:
         sudo apt-get -qqy --purge remove \
             libpq5 \
             libpq-dev \
+            php*fpm \
             postgresql \
             postgresql-client-common \
             postgresql-common
@@ -67,6 +68,17 @@ jobs:
         sudo env "PATH=$PATH" test/ci/test_all_upgrades.sh
     - name: Test packaging
       run: |
-        # Test install from package
+        # Build the packages
         PG_SUPPORTED_VERSIONS=${{ matrix.pg }} make deb
+        # Uninstall directly installed files
+        sudo make uninstall
+        # Install postgresql-agnostic dbpatch package
+        sudo dpkg -i ../dbpatch_*.deb
+        dpkg -L dbpatch
+        # Run post-install postgresql-agnostic tests
+        make installcheck-loader-noext || { cat regression.diffs; false; }
+        # Install postgresql-specific dbpatch package
         sudo dpkg -i ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
+        # Run post-install extension based checks
+        make installcheck || { cat regression.diffs; false; }
+        make installcheck-loader || { cat regression.diffs; false; }
