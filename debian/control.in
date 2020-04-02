@@ -17,4 +17,18 @@ Recommends:
 Description: PostgreSQL database patch change management extension. This
  extension supports conducting database changes and deploying them in a robust
  and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
+Package: dbpatch
+Architecture: all
+Depends: ${misc:Depends}
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the schema loader usable to load the extension in any
+ PostgreSQL database mechanism withouth having access to the server filesystem
 
