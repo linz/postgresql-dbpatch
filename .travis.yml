@@ -59,6 +59,8 @@ script:
   # Test build and install from package
   - PG_SUPPORTED_VERSIONS=${PG} make deb
   - sudo dpkg -i ../*-dbpatch_*.deb
+  - make deb
+  - make deb-check
 
 # vim: set ts=2 sts=2 sw=2 et:
 
