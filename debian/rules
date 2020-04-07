@@ -23,10 +23,14 @@ override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/dbpatch/usr/share/
 	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/share/dbpatch/ \
 	   $(CURDIR)/debian/dbpatch/usr/share/
+	# Make sure not to include /usr/share/dbpatch/ in postgresql packages
+	rm -rf $(CURDIR)/debian/postgresql-*-dbpatch/usr/share/dbpatch/
 	# Shall we copy instead of moving ?
 	mkdir -p $(CURDIR)/debian/dbpatch/usr/
 	mv $(CURDIR)/debian/postgresql-$(NEWEST_POSTGRES_VERSION)-dbpatch/usr/bin/ \
 	   $(CURDIR)/debian/dbpatch/usr/
+	# Make sure not to include /usr/bin/ in postgresql packages
+	rm -rf $(CURDIR)/debian/postgresql-*-dbpatch/usr/bin
 
 
 %:
