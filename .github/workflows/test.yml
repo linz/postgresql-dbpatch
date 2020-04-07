@@ -82,3 +82,6 @@ jobs:
         # Run post-install extension based checks
         make installcheck || { cat regression.diffs; false; }
         make installcheck-loader || { cat regression.diffs; false; }
+        # Test building pacakges for all supported versions
+        make deb
+        make deb-check
