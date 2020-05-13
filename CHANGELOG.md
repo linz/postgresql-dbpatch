@@ -3,6 +3,8 @@
 All notable changes for the PostgreSQL dbpatch extension are documented 
 in this file.
 
+## [1.6.0dev] - 2020-MM-DD
+
 ## [1.5.0] - 2019-07-29
 ### Improved
 - Progress message from `dbpatch-loader` (#47)
