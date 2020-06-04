@@ -9,8 +9,8 @@ on:
       - master
       - packagecloud
       - 'release-*'
-    tags:
-      - '*'
+    tags-ignore:
+      - 'debian/*'
 
 jobs:
 
