@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.6.0dev
+EXTVERSION = 1.7.0dev
 REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
 
 PREFIX ?= /usr/local
@@ -35,7 +35,9 @@ UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
   1.2.0dev 1.2.0 \
   1.3.0dev 1.3.0 \
   1.4.0dev 1.4.0 \
-  1.5.0dev
+  1.5.0dev 1.5.0 \
+  1.6.0dev 1.6.0 \
+  1.7.0dev
 
 UPGRADE_SCRIPTS_BUILT = $(patsubst %,upgrade-scripts/$(EXTENSION)--%--$(EXTVERSION).sql,$(UPGRADEABLE_VERSIONS))
 
@@ -68,7 +70,7 @@ $(META): $(META).in Makefile
 
 $(EXTENSION).control: $(EXTENSION).control.in Makefile
 	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
- 
+
 EXTRA_CLEAN = \
   $(LOCAL_BINS) \
 	sql/$(EXTENSION)--$(EXTVERSION).sql \
