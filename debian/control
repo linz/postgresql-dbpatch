@@ -57,6 +57,18 @@ Description: PostgreSQL database patch change management extension. This
  This package contains the EXTENSION version of the code
  (requires access to server filesystem)
 
+Package: postgresql-14-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-14
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
 Package: dbpatch
 Architecture: all
 Depends: ${misc:Depends}
