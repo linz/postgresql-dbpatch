@@ -48,7 +48,7 @@ DATA         = $(wildcard sql/*--*.sql)
 DOCS         = $(wildcard doc/*.md)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
-REGRESS_OPTS = --inputdir=test --load-language=plpgsql
+REGRESS_OPTS = --inputdir=test
 
 #
 # Uncoment the MODULES line if you are adding C files
