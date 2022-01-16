@@ -10,7 +10,10 @@ cd "$(dirname "$0")/../../"
 VER="1.0.0 1.0.1";
 
 # Install all older versions
-test .git/shallow && git fetch --unshallow # in case this was a shallow copy
+if [ -e .git/shallow ]
+then
+    git fetch --unshallow # in case this was a shallow copy
+fi
 git fetch --tags
 git clone . older-versions
 cd older-versions
