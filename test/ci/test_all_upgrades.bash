@@ -3,7 +3,7 @@
 set -o errexit -o noclobber -o nounset -o pipefail
 shopt -s failglob inherit_errexit
 
-cd "$(dirname "$0")/../../"
+project_root="$(dirname "$0")/../.."
 
 #
 # Versions/tags known to build
@@ -20,17 +20,16 @@ versions=(
 )
 
 # Install all older versions
-git clone . older-versions
-cd older-versions
+work_directory="$(mktemp --directory)"
+git clone "$project_root" "$work_directory"
 for v in "${versions[@]}"
 do
     echo "-------------------------------------"
     echo "Installing version $v"
     echo "-------------------------------------"
-    git clean -dxf && git checkout "$v" && sudo env "PATH=$PATH" make install
+    git -C "$work_directory" clean -dxf && git -C "$work_directory" checkout "$v" && sudo env "PATH=$PATH" make -C "$work_directory" install
 done
-cd ..
-rm -rf older-versions
+rm -rf "$work_directory"
 
 # Test upgrade from all older versions
 for v in "${versions[@]}"
@@ -38,7 +37,7 @@ do
     echo "-------------------------------------"
     echo "Checking upgrade from version $v"
     echo "-------------------------------------"
-    if ! make installcheck-upgrade PREPAREDB_UPGRADE_FROM="$v"
+    if ! make -C "$work_directory" installcheck-upgrade PREPAREDB_UPGRADE_FROM="$v"
     then
         cat regression.diffs
         exit 1
