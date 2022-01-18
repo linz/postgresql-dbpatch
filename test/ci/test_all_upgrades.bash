@@ -20,10 +20,10 @@ git clone . older-versions
 cd older-versions
 for v in $versions
 do
-  echo "-------------------------------------"
-  echo "Installing version $v"
-  echo "-------------------------------------"
-  git clean -dxf && git checkout "$v" && sudo env "PATH=$PATH" make install
+    echo "-------------------------------------"
+    echo "Installing version $v"
+    echo "-------------------------------------"
+    git clean -dxf && git checkout "$v" && sudo env "PATH=$PATH" make install
 done
 cd ..
 rm -rf older-versions
@@ -31,12 +31,12 @@ rm -rf older-versions
 # Test upgrade from all older versions
 for v in $versions
 do
-  echo "-------------------------------------"
-  echo "Checking upgrade from version $v"
-  echo "-------------------------------------"
-  if ! make installcheck-upgrade PREPAREDB_UPGRADE_FROM="$v"
-  then
-      cat regression.diffs
-      exit 1
-  fi
+    echo "-------------------------------------"
+    echo "Checking upgrade from version $v"
+    echo "-------------------------------------"
+    if ! make installcheck-upgrade PREPAREDB_UPGRADE_FROM="$v"
+    then
+        cat regression.diffs
+        exit 1
+    fi
 done
