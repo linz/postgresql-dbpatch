@@ -93,6 +93,15 @@ To simplify the above tasks you may use the `dbpatch-loader` script which is ins
 
 The `dbpatch` extension has no dependencies other than PostgreSQL and PL/PgSQL
 
+## Development
+
+To upgrade:
+
+1. If this is a patch release, check out the relevant `release-X.Y` branch.
+2. Add a [change log](CHANGELOG.md) entry.
+3. Add an `UPGRADEABLE_VERSIONS` entry in the [Makefile](Makefile).
+4. Add a `VER` entry in [test_all_upgrades.sh](test/ci/test_all_upgrades.sh)).
+
 ## License
 
 This project is under 3-clause BSD License, except where otherwise specified. See the LICENSE file
