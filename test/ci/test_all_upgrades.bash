@@ -23,23 +23,23 @@ versions=(
 trap 'rm -r "$work_directory"' EXIT
 work_directory="$(mktemp --directory)"
 git clone "$project_root" "$work_directory"
-for v in "${versions[@]}"
+for version in "${versions[@]}"
 do
     echo "-------------------------------------"
-    echo "Installing version $v"
+    echo "Installing version $version"
     echo "-------------------------------------"
     git -C "$work_directory" clean -dxf
-    git -C "$work_directory" checkout "$v"
+    git -C "$work_directory" checkout "$version"
     make -C "$work_directory" PREFIX="$(mktemp --directory)" install
 done
 
 # Test upgrade from all older versions
-for v in "${versions[@]}"
+for version in "${versions[@]}"
 do
     echo "-------------------------------------"
-    echo "Checking upgrade from version $v"
+    echo "Checking upgrade from version $version"
     echo "-------------------------------------"
-    if ! make -C "$work_directory" installcheck-upgrade PREPAREDB_UPGRADE_FROM="$v"
+    if ! make -C "$work_directory" installcheck-upgrade PREPAREDB_UPGRADE_FROM="$version"
     then
         cat regression.diffs
         exit 1
