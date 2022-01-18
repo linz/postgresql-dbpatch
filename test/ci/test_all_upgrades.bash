@@ -28,7 +28,9 @@ do
     echo "-------------------------------------"
     echo "Installing version $v"
     echo "-------------------------------------"
-    git -C "$work_directory" clean -dxf && git -C "$work_directory" checkout "$v" && sudo env "PATH=$PATH" make -C "$work_directory" install
+    git -C "$work_directory" clean -dxf
+    git -C "$work_directory" checkout "$v"
+    sudo env "PATH=$PATH" make -C "$work_directory" install
 done
 
 # Test upgrade from all older versions
