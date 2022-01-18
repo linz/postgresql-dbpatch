@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -o errexit
+set -o errexit -o noclobber -o nounset -o pipefail
+shopt -s failglob inherit_errexit
 
 cd "$(dirname "$0")/../../"
 
