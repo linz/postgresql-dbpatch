@@ -1,5 +1,4 @@
 ---
-
 dist: bionic
 sudo: required
 language: C++
@@ -14,17 +13,12 @@ env:
     - PG=11
 
 before_install:
-  - sudo apt-get -y --purge remove postgresql libpq-dev libpq5
-    postgresql-client-common postgresql-common
+  - sudo apt-get -y --purge remove postgresql libpq-dev libpq5 postgresql-client-common
+    postgresql-common
   - sudo rm -rf /var/lib/postgresql
   - sudo apt-get update -qq
-  - sudo apt-get install -y
-    postgresql-${PG}
-    postgresql-client-${PG}
-    postgresql-${PG}-pgtap
-    postgresql-server-dev-${PG}
-    postgresql-server-dev-all
-    debhelper fakeroot
+  - sudo apt-get install -y postgresql-${PG} postgresql-client-${PG} postgresql-${PG}-pgtap
+    postgresql-server-dev-${PG} postgresql-server-dev-all debhelper fakeroot
     libtap-parser-sourcehandler-pgtap-perl
   # Set PATH as postgresql-server-dev-all pretends version is 11
   - export PATH=/usr/lib/postgresql/${PG}/bin:${PATH}
@@ -60,6 +54,5 @@ script:
   - PG_SUPPORTED_VERSIONS=${PG} make deb
   - sudo dpkg -i ../postgresql-${PG}-dbpatch_*.deb
   - sudo dpkg -i ../dbpatch_*.deb
-
 # vim: set ts=2 sts=2 sw=2 et:
 
