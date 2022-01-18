@@ -8,7 +8,16 @@ cd "$(dirname "$0")/../../"
 #
 # Versions/tags known to build
 #
-versions="1.0.0 1.0.1 1.1.0 1.3.0 1.4.0 1.5.0 1.6.0 1.7.0"
+versions=(
+    '1.0.0'
+    '1.0.1'
+    '1.1.0'
+    '1.3.0'
+    '1.4.0'
+    '1.5.0'
+    '1.6.0'
+    '1.7.0'
+)
 
 # Install all older versions
 if [ -e .git/shallow ]
@@ -18,7 +27,7 @@ fi
 git fetch --tags
 git clone . older-versions
 cd older-versions
-for v in $versions
+for v in "${versions[@]}"
 do
     echo "-------------------------------------"
     echo "Installing version $v"
@@ -29,7 +38,7 @@ cd ..
 rm -rf older-versions
 
 # Test upgrade from all older versions
-for v in $versions
+for v in "${versions[@]}"
 do
     echo "-------------------------------------"
     echo "Checking upgrade from version $v"
