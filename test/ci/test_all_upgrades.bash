@@ -20,6 +20,7 @@ versions=(
 )
 
 # Install all older versions
+trap 'rm -r "$work_directory"' EXIT
 work_directory="$(mktemp --directory)"
 git clone "$project_root" "$work_directory"
 for v in "${versions[@]}"
@@ -29,7 +30,6 @@ do
     echo "-------------------------------------"
     git -C "$work_directory" clean -dxf && git -C "$work_directory" checkout "$v" && sudo env "PATH=$PATH" make -C "$work_directory" install
 done
-rm -rf "$work_directory"
 
 # Test upgrade from all older versions
 for v in "${versions[@]}"
