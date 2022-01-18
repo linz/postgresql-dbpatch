@@ -23,7 +23,7 @@ do
   echo "-------------------------------------"
   echo "Installing version $v"
   echo "-------------------------------------"
-  git clean -dxf && git checkout "$v" && sudo env "PATH=$PATH" make install || exit 1
+  git clean -dxf && git checkout "$v" && sudo env "PATH=$PATH" make install
 done
 cd ..
 rm -rf older-versions
