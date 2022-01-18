@@ -28,9 +28,9 @@ do
     echo "-------------------------------------"
     echo "Installing version $version"
     echo "-------------------------------------"
-    git -C "$work_directory" clean -dxf
+    git -C "$work_directory" clean -dx --force
     git -C "$work_directory" checkout "$version"
-    make -C "$work_directory" PREFIX="$(mktemp --directory)" install
+    make --directory="$work_directory" PREFIX="$(mktemp --directory)" install
 done
 
 # Test upgrade from all older versions
@@ -39,7 +39,7 @@ do
     echo "-------------------------------------"
     echo "Checking upgrade from version $version"
     echo "-------------------------------------"
-    if ! make -C "$work_directory" installcheck-upgrade PREPAREDB_UPGRADE_FROM="$version"
+    if ! make --directory="$work_directory" installcheck-upgrade PREPAREDB_UPGRADE_FROM="$version"
     then
         cat regression.diffs
         exit 1
