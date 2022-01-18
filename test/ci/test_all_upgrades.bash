@@ -20,11 +20,6 @@ versions=(
 )
 
 # Install all older versions
-if [ -e .git/shallow ]
-then
-    git fetch --unshallow # in case this was a shallow copy
-fi
-git fetch --tags
 git clone . older-versions
 cd older-versions
 for v in "${versions[@]}"

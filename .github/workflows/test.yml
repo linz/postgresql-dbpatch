@@ -37,6 +37,9 @@ jobs:
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
       - uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+
       - name: Install dependencies
         run: |
           sudo apt-get -qqy --purge remove \
