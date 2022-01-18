@@ -30,7 +30,7 @@ do
     echo "-------------------------------------"
     git -C "$work_directory" clean -dxf
     git -C "$work_directory" checkout "$v"
-    sudo env "PATH=$PATH" make -C "$work_directory" install
+    make -C "$work_directory" PREFIX="$(mktemp --directory)" install
 done
 
 # Test upgrade from all older versions
