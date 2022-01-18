@@ -7,7 +7,7 @@ cd "$(dirname "$0")/../../"
 #
 # Versions/tags known to build
 #
-VER="1.0.0 1.0.1 1.1.0";
+VER="1.0.0 1.0.1 1.1.0 1.3.0";
 
 # Install all older versions
 if [ -e .git/shallow ]
