@@ -117,10 +117,15 @@ jobs:
     name: Package for Debian
     runs-on: ubuntu-18.04
     strategy:
+      fail-fast: false
       matrix:
-        distro: ['bionic']
+        release:
+          - bionic
+          - focal
     steps:
       - uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0
 
       - name: Determine packagecloud publication target
         run: |
@@ -141,7 +146,8 @@ jobs:
           fi
           echo "REPO=$REPO" | tee -a $GITHUB_ENV
 
-      - uses: linz/linz-software-repository@v5
+      - uses: linz/linz-software-repository@v6
         with:
+          release: ${{ matrix.release }}
           packagecloud_token: ${{ secrets.LINZCI_PACKAGECLOUD_TOKEN }}
           packagecloud_repository: ${{ env.REPO }}
