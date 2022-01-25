@@ -3,7 +3,7 @@
 set -o errexit -o noclobber -o nounset -o pipefail
 shopt -s failglob inherit_errexit
 
-project_root="$(dirname "$0")/../.."
+project_root="$(dirname "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")")"
 
 # Versions/tags known to build
 mapfile -t versions < <(git tag --list '[0-9]*.[0-9]*.[0-9]*' | grep --fixed-strings --invert-match --line-regexp --regexp=1.2.0)
