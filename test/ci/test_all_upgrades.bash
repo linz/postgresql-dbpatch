@@ -3,7 +3,7 @@
 set -o errexit -o noclobber -o nounset -o pipefail
 shopt -s failglob inherit_errexit
 
-project_root="$(dirname "$0")/../.."
+project_root="$(dirname "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")")"
 
 #
 # Versions/tags known to build
