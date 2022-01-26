@@ -2,8 +2,9 @@ name: test
 
 on:
   pull_request:
-    branches:
-      - '*'
+    branches-ignore:
+      - packagecloud
+      - 'release-*'
   push:
     branches:
       - master
