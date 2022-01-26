@@ -18,7 +18,7 @@ jobs:
   lint:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.4.0
       - run: sudo apt-get update
       - run: sudo apt-get install python3-pip
       - run: pip3 install --no-cache pre-commit
@@ -36,7 +36,7 @@ jobs:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
 
@@ -116,7 +116,7 @@ jobs:
       matrix:
         distro: ['bionic']
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.4.0
 
       - name: Determine packagecloud publication target
         run: |
