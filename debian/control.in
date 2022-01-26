@@ -1,6 +1,6 @@
 Source: postgresql-dbpatch
 Section: database
-Priority: extra
+Priority: optional
 Build-Depends: debhelper (>= 7),
                postgresql-server-dev-all
 Standards-Version: 3.9.5
