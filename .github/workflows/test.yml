@@ -110,9 +110,6 @@ jobs:
           make deb-check
 
   package:
-    needs:
-      - lint
-      - test
     name: Package for Debian
     runs-on: ubuntu-18.04
     strategy:
