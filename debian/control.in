@@ -1,6 +1,6 @@
 Source: postgresql-dbpatch
 Section: database
-Priority: extra
+Priority: optional
 Build-Depends: debhelper (>= 7),
                postgresql-server-dev-all
 Standards-Version: 3.9.5
@@ -30,5 +30,4 @@ Description: PostgreSQL database patch change management extension. This
  and automated way.
  .
  This package contains the schema loader usable to load the extension in any
- PostgreSQL database mechanism withouth having access to the server filesystem
-
+ PostgreSQL database mechanism without having access to the server filesystem
