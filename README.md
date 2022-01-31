@@ -93,6 +93,12 @@ To simplify the above tasks you may use the `dbpatch-loader` script which is ins
 
 The `dbpatch` extension has no dependencies other than PostgreSQL and PL/PgSQL
 
+## Linting
+
+Prerequisites: [Nix](https://nixos.org/download.html)
+
+Run `nix-shell --pure --run 'pre-commit run --all-files'`.
+
 ## License
 
 This project is under 3-clause BSD License, except where otherwise specified. See the LICENSE file

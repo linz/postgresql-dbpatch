@@ -18,11 +18,12 @@ jobs:
   lint:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
-      - run: sudo apt-get update
-      - run: sudo apt-get install python3-pip
-      - run: pip3 install --no-cache pre-commit
-      - run: pre-commit run --all-files
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Install Nix
+        uses: cachix/install-nix-action@v16
+      - name: Run pre-commit hooks
+        run: nix-shell --pure --run 'pre-commit run --all-files'
 
   test:
     name: Test PostgreSQL ${{ matrix.pg }} on ${{ matrix.os }}
