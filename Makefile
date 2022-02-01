@@ -56,27 +56,6 @@ REGRESS_OPTS = --inputdir=test
 #
 #MODULES      = $(patsubst %.c,%,$(wildcard src/*.c))
 PG_CONFIG    ?= pg_config
-PG91         = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo no || echo yes)
-
-ifeq ($(PG91),yes)
-all: $(EXTENSION)--$(EXTVERSION).sql
-
-$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
-	$(SED) -e 's|\$$Id\$$|$(REVISION)|' $< | \
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
-
-$(META): $(META).in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
-
-$(EXTENSION).control: $(EXTENSION).control.in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
-
-EXTRA_CLEAN = \
-  $(LOCAL_BINS) \
-	sql/$(EXTENSION)--$(EXTVERSION).sql \
-	$(EXTENSION).control \
-	$(META) upgrade-scripts
-endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
