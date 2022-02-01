@@ -1,12 +1,15 @@
 
-EXTVERSION = 1.7.0dev
-REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
+EXTVERSION = $(lastword $(UPGRADEABLE_VERSIONS))
+REVISION  = $(shell git describe --always)
+ifeq ($(REVISION),)
+$(error "REVISION is empty")
+endif
 
 PREFIX ?= /usr/local
 LOCAL_BINDIR = $(PREFIX)/bin
 LOCAL_SHAREDIR = $(PREFIX)/share/$(EXTENSION)
-LOCAL_SHARES = $(EXTENSION)-$(EXTVERSION).sql.tpl
-LOCAL_BINS = $(EXTENSION)-loader
+LOCAL_SHARE = $(EXTENSION)-$(EXTVERSION).sql.tpl
+LOCAL_BIN = $(EXTENSION)-loader
 
 DISTFILES = \
         doc \
@@ -18,26 +21,15 @@ DISTFILES = \
         $(META).in \
         README.md \
         dbpatch-loader.sh \
-        dbpatch.control.in \
-        $(NULL)
+        dbpatch.control.in
 
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
+ifeq ($(EXTENSION),)
+$(error "EXTENSION is empty")
+endif
 
-TEMPLATE_SQL_INSTALLDIR = $(DESTDIR)/usr/share/dbpatch/sql/
-
-TGT_VERSION=$(subst dev,,$(EXTVERSION))
-PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/\.sql//' | grep -Fv $(TGT_VERSION) | sort -n | tail -1)
-
-SED = sed
-
-UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
-  1.2.0dev 1.2.0 \
-  1.3.0dev 1.3.0 \
-  1.4.0dev 1.4.0 \
-  1.5.0dev 1.5.0 \
-  1.6.0dev 1.6.0 \
-  1.7.0dev
+UPGRADEABLE_VERSIONS = $(shell test/ci/get_versions.bash)
 
 UPGRADE_SCRIPTS_BUILT = $(patsubst %,upgrade-scripts/$(EXTENSION)--%--$(EXTVERSION).sql,$(UPGRADEABLE_VERSIONS))
 
@@ -50,27 +42,28 @@ TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test
 
-PG_CONFIG    ?= pg_config
-
 all: $(EXTENSION)--$(EXTVERSION).sql
 
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
-	$(SED) -e 's|\$$Id\$$|$(REVISION)|' $< | \
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
+	sed -e 's|\$$Id\$$|$(REVISION)|' $< | \
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
 
 $(META): $(META).in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
 $(EXTENSION).control: $(EXTENSION).control.in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
 EXTRA_CLEAN = \
-  $(LOCAL_BINS) \
+  $(LOCAL_BIN) \
 	sql/$(EXTENSION)--$(EXTVERSION).sql \
 	$(EXTENSION).control \
 	$(META) upgrade-scripts
 
-PGXS := $(shell $(PG_CONFIG) --pgxs)
+PGXS := $(shell pg_config --pgxs)
+ifeq ($(PGXS),)
+$(error "PGXS is empty")
+endif
 include $(PGXS)
 
 $(UPGRADE_SCRIPTS_BUILT): upgrade-scripts
@@ -85,7 +78,7 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)--$(EXTVERSION)next.sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)next--$(EXTVERSION).sql
 
-all: upgrade-scripts $(LOCAL_SHARES) $(LOCAL_BINS)
+all: upgrade-scripts $(LOCAL_SHARE) $(LOCAL_BIN)
 
 deb:
 	pg_buildext updatecontrol
@@ -122,13 +115,13 @@ test/sql/preparedb: test/sql/preparedb.in
       else \
         UPGRADE_FROM=""; \
       fi; \
-      $(SED) -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
+      sed -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
 	  elif test "${PREPAREDB_NOEXTENSION}" = 1; then \
       grep -v dbpatch; \
     else \
       cat; \
     fi | \
-	  $(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
+	  sed -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
 
 installcheck: testdeps
 
@@ -176,13 +169,13 @@ uninstall: local-uninstall
 
 local-install:
 	$(INSTALL) -d $(DESTDIR)$(LOCAL_BINDIR)
-	$(INSTALL) $(LOCAL_BINS) $(DESTDIR)$(LOCAL_BINDIR)
+	$(INSTALL) $(LOCAL_BIN) $(DESTDIR)$(LOCAL_BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(LOCAL_SHAREDIR)
-	$(INSTALL) -m 644 $(LOCAL_SHARES) $(DESTDIR)$(LOCAL_SHAREDIR)
+	$(INSTALL) -m 644 $(LOCAL_SHARE) $(DESTDIR)$(LOCAL_SHAREDIR)
 
 local-uninstall:
-	for b in $(LOCAL_BINS); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
-	for b in $(LOCAL_SHARES); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
+	for b in $(LOCAL_BIN); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
+	for b in $(LOCAL_SHARE); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
 
 dist: distclean $(DISTFILES)
 	mkdir $(EXTENSION)-$(EXTVERSION)
