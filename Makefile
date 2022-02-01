@@ -48,8 +48,6 @@ TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test
 
-PG_CONFIG    ?= pg_config
-
 all: $(EXTENSION)--$(EXTVERSION).sql
 
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
@@ -68,7 +66,7 @@ EXTRA_CLEAN = \
 	$(EXTENSION).control \
 	$(META) upgrade-scripts
 
-PGXS := $(shell $(PG_CONFIG) --pgxs)
+PGXS := $(shell pg_config --pgxs)
 include $(PGXS)
 
 $(UPGRADE_SCRIPTS_BUILT): upgrade-scripts
