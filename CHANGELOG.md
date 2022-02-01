@@ -50,6 +50,13 @@ All notable changes for the PostgreSQL dbpatch extension are documented in this 
 - New `dbpatch-loader` utility script (#14)
 - New `dbpatch_version()` function (#17)
 
+## [1.1.1] - 2017-09-26
+
+### Fixed
+
+- Do not install META.json
+- Fix revision detection from git tags containing slashes
+
 ## [1.1.0] - 2017-09-18
 
 ### Changed
