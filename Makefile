@@ -2,7 +2,7 @@
 EXTVERSION = $(lastword $(UPGRADEABLE_VERSIONS))
 REVISION  = $(shell git describe --always)
 ifeq ($(REVISION),)
-$(error "REVISION is empty")
+$(warning "REVISION is empty")
 endif
 
 PREFIX ?= /usr/local
