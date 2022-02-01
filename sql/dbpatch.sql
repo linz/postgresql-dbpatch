@@ -14,18 +14,18 @@
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION dbpatch" to load this file. \quit
 
-CREATE TABLE IF NOT EXISTS applied_patches (
+CREATE TABLE IF NOT EXISTS @extschema@.applied_patches (
     patch_name TEXT NOT NULL PRIMARY KEY,
     datetime_applied TIMESTAMP NOT NULL DEFAULT now(),
     patch_sql TEXT[] NOT NULL
 );
 
-COMMENT ON TABLE applied_patches
+COMMENT ON TABLE @extschema@.applied_patches
   IS 'dbpatch versioning data';
   
-SELECT pg_catalog.pg_extension_config_dump('applied_patches', '');
+SELECT pg_catalog.pg_extension_config_dump('@extschema@.applied_patches', '');
 
-CREATE OR REPLACE FUNCTION apply_patch(
+CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,
     p_patch_sql  TEXT[]
 )
@@ -45,11 +45,11 @@ BEGIN
         WHERE  patch_name = p_patch_name
     )
     THEN
-        RAISE INFO 'Patch % is already applied', p_patch_name;
+        RAISE NOTICE 'Patch % is already applied', p_patch_name;
         RETURN FALSE;
     END IF;
     
-    RAISE INFO 'Applying patch %', p_patch_name;
+    RAISE NOTICE 'Applying patch %', p_patch_name;
     
     BEGIN
         FOR v_sql IN SELECT * FROM unnest(p_patch_sql) LOOP
@@ -58,7 +58,7 @@ BEGIN
         END LOOP;
     EXCEPTION
         WHEN others THEN
-            RAISE EXCEPTION 'Could not applied % patch using %. ERROR: %',
+            RAISE EXCEPTION 'Could not apply % patch using %. ERROR: %',
                 p_patch_name, v_sql, SQLERRM;
     END;
 
@@ -76,7 +76,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION apply_patch(
+CREATE OR REPLACE FUNCTION @extschema@.reapply_patch(
+    p_patch_name TEXT
+)
+RETURNS
+    BOOLEAN AS
+$$
+-- $Id$
+  WITH matches AS (
+      DELETE FROM @extschema@.applied_patches
+      WHERE patch_name = p_patch_name
+      RETURNING patch_sql
+  )
+  SELECT @extschema@.apply_patch(p_patch_name, patch_sql)
+  FROM matches;
+$$ LANGUAGE sql VOLATILE;
+
+CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,
     p_patch_sql  TEXT
 )
@@ -85,6 +101,15 @@ RETURNS
 $$
     -- $Id$
     SELECT @extschema@.apply_patch($1, ARRAY[$2])
+$$
+    LANGUAGE sql;
+
+
+CREATE OR REPLACE FUNCTION @extschema@.dbpatch_version()
+RETURNS
+    TEXT AS
+$$
+    SELECT '@@VERSION@@ $Id$'::text;
 $$
     LANGUAGE sql;
 

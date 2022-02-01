@@ -1,0 +1,51 @@
+\set ECHO none
+--------------------------------------------------------------------------------
+--
+-- postgresql-dbpatch - PostgreSQL database patch change management extension
+--
+-- Copyright 2018 Crown copyright (c)
+-- Land Information New Zealand and the New Zealand Government.
+-- All rights reserved
+--
+-- This software is released under the terms of the new BSD license.  See the
+-- LICENSE file for more information.
+--
+--------------------------------------------------------------------------------
+-- Provide unit testing for dbpatch using pgTAP
+--------------------------------------------------------------------------------
+
+\i test/sql/preparedb
+
+BEGIN;
+
+SELECT plan(11);
+
+SELECT is(apply_patch('test patch 1', ARRAY['SELECT 1', 'SELECT 2']),
+  't', 'array of string patches');
+SELECT is(apply_patch('test patch 2', 'SELECT 1'),
+  't', 'string patch');
+SELECT is(apply_patch('test patch 2', 'SELECT 1'),
+  'f', 'string patch already applied');
+SELECT throws_like($$SELECT apply_patch('test bad patch SQL', 'SELET 1')$$,
+  '%bad patch SQL%', 'bad patch syntax throws');
+
+SELECT has_function( 'dbpatch_version' );
+
+CREATE TABLE test_patch_3 (a int);
+SELECT is(apply_patch('test patch 3',
+  'INSERT INTO test_patch_3 VALUES (1)'),
+  't', 'patch 3 is applied');
+SELECT is((SELECT count(*) FROM test_patch_3), 1::bigint,
+  'patch 3 was applied correctly');
+SELECT is(apply_patch('test patch 3',
+  'INSERT INTO test_patch_3 VALUES (1)'),
+  'f', 'patch 3 was applied applied');
+SELECT is((SELECT count(*) FROM test_patch_3), 1::bigint,
+  'patch 3 was not applied a second time');
+SELECT is(reapply_patch('test patch 3'),
+  't', 'patch 3 is reapplied on request');
+SELECT is((SELECT count(*) FROM test_patch_3), 2::bigint,
+  'patch 3 was reapplied correctly');
+
+ROLLBACK;
+

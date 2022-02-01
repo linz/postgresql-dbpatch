@@ -1,9 +1,0 @@
-\set ECHO none
-INFO:  Applying patch test patch 1
-t1|t
-INFO:  Applying patch test patch 2
-t2|t
-INFO:  Patch test patch 2 is already applied
-t3|f
-INFO:  Applying patch test bad patch SQL
-ERROR:  Could not applied test bad patch SQL patch using SELET 1. ERROR: syntax error at or near "SELET"
