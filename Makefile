@@ -21,8 +21,7 @@ DISTFILES = \
         $(META).in \
         README.md \
         dbpatch-loader.sh \
-        dbpatch.control.in \
-        $(NULL)
+        dbpatch.control.in
 
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
