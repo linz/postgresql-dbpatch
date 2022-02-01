@@ -45,11 +45,11 @@ BEGIN
         WHERE  patch_name = p_patch_name
     )
     THEN
-        RAISE INFO 'Patch % is already applied', p_patch_name;
+        RAISE NOTICE 'Patch % is already applied', p_patch_name;
         RETURN FALSE;
     END IF;
     
-    RAISE INFO 'Applying patch %', p_patch_name;
+    RAISE NOTICE 'Applying patch %', p_patch_name;
     
     BEGIN
         FOR v_sql IN SELECT * FROM unnest(p_patch_sql) LOOP
@@ -58,7 +58,7 @@ BEGIN
         END LOOP;
     EXCEPTION
         WHEN others THEN
-            RAISE EXCEPTION 'Could not applied % patch using %. ERROR: %',
+            RAISE EXCEPTION 'Could not apply % patch using %. ERROR: %',
                 p_patch_name, v_sql, SQLERRM;
     END;
 
@@ -75,6 +75,22 @@ BEGIN
     RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION @extschema@.reapply_patch(
+    p_patch_name TEXT
+)
+RETURNS
+    BOOLEAN AS
+$$
+-- $Id$
+  WITH matches AS (
+      DELETE FROM @extschema@.applied_patches
+      WHERE patch_name = p_patch_name
+      RETURNING patch_sql
+  )
+  SELECT @extschema@.apply_patch(p_patch_name, patch_sql)
+  FROM matches;
+$$ LANGUAGE sql VOLATILE;
 
 CREATE OR REPLACE FUNCTION @extschema@.apply_patch(
     p_patch_name TEXT,

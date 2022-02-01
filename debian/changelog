@@ -1,3 +1,39 @@
+postgresql-dbpatch (1.5.0-3linz~bionic1) bionic; urgency=medium
+
+  * Fix split postgresql-X.Y-dbpatch and dbpatch packaging
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Wed, 08 Apr 2020 10:23:43 +0200
+
+postgresql-dbpatch (1.5.0-2linz~bionic1) bionic; urgency=medium
+
+  * Non PostgreSQL dependant packaging
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Thu, 02 Apr 2020 18:31:13 +0200
+
+postgresql-dbpatch (1.5.0-1linz~bionic1) bionic; urgency=medium
+
+  * New distribution
+
+ -- Sandro Santilli <strk@kbt.io>  Wed, 07 Aug 2019 18:47:25 +0200
+
+postgresql-dbpatch (1.5.0-1linz~trusty1) trusty; urgency=medium
+
+  * New upstream version
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Mon, 29 Jul 2019 19:20:02 +0200
+
+postgresql-dbpatch (1.4.0-1linz~trusty1) trusty; urgency=medium
+
+  * New upstream version
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Tue, 15 Jan 2019 15:20:42 +0100
+
+postgresql-dbpatch (1.3.0-1linz~trusty1) trusty; urgency=medium
+
+  * New upstream version
+
+ -- Ivan Mincik <imincik@linz.govt.nz>  Fri, 19 Oct 2018 09:49:20 +0200
+
 postgresql-dbpatch (1.2.0-1linz~trusty1) trusty; urgency=medium
 
   * New upstream release

@@ -22,7 +22,11 @@ dbpatch-loader
 debian/postgresql*-dbpatch/
 debian/postgresql*dbpatch.substvars
 debian/postgresql*dbpatch.debhelper
+debian/dbpatch/
+debian/dbpatch.substvars
+debian/dbpatch.debhelper
 debian/files
+debian/.debhelper/
 
 # Packages #
 ############
@@ -53,3 +57,6 @@ debian/files
 ehthumbs.db
 Thumbs.db
 
+# IDE files #
+######################
+.idea/
