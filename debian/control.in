@@ -1,0 +1,33 @@
+Source: postgresql-dbpatch
+Section: database
+Priority: optional
+Build-Depends: debhelper (>= 7),
+               postgresql-server-dev-all
+Standards-Version: 3.9.5
+Maintainer: Ivan Mincik <imincik@linz.govt.nz>
+Homepage: http://www.linz.govt.nz
+Vcs-Git: git://github.com/linz/postgresql-dbpatch.git
+Vcs-Browser: https://github.com/linz/postgresql-dbpatch
+
+Package: postgresql-PGVERSION-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-PGVERSION
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
+Package: dbpatch
+Architecture: all
+Depends: ${misc:Depends}
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the schema loader usable to load the extension in any
+ PostgreSQL database mechanism without having access to the server filesystem

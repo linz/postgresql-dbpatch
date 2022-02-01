@@ -1,0 +1,4 @@
+# https://editorconfig.org/
+
+[*]
+trim_trailing_whitespace = true

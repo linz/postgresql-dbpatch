@@ -7,6 +7,11 @@ tmp/
 regression.diffs
 regression.out
 /sql/ extension_name =>--*
+META.json
+dbpatch.control
+test/sql/preparedb
+dbpatch-loader
+*.tpl
 
 # Editor Backup #
 #################
@@ -17,7 +22,11 @@ regression.out
 debian/postgresql*-dbpatch/
 debian/postgresql*dbpatch.substvars
 debian/postgresql*dbpatch.debhelper
+debian/dbpatch/
+debian/dbpatch.substvars
+debian/dbpatch.debhelper
 debian/files
+debian/.debhelper/
 
 # Packages #
 ############
@@ -48,3 +57,6 @@ debian/files
 ehthumbs.db
 Thumbs.db
 
+# IDE files #
+######################
+.idea/

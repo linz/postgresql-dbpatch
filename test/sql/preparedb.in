@@ -1,0 +1,10 @@
+\pset format unaligned
+\pset tuples_only true
+\set QUIET true
+\set VERBOSITY terse
+SET client_min_messages TO WARNING;
+CREATE EXTENSION IF NOT EXISTS pgtap;
+CREATE EXTENSION IF NOT EXISTS dbpatch @@FROM_VERSION@@;
+--UPGRADE-- ALTER EXTENSION dbpatch UPDATE TO '@@VERSION@@'
+
+
