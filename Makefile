@@ -8,8 +8,8 @@ endif
 PREFIX ?= /usr/local
 LOCAL_BINDIR = $(PREFIX)/bin
 LOCAL_SHAREDIR = $(PREFIX)/share/$(EXTENSION)
-LOCAL_SHARES = $(EXTENSION)-$(EXTVERSION).sql.tpl
-LOCAL_BINS = $(EXTENSION)-loader
+LOCAL_SHARE = $(EXTENSION)-$(EXTVERSION).sql.tpl
+LOCAL_BIN = $(EXTENSION)-loader
 
 DISTFILES = \
         doc \
@@ -64,7 +64,7 @@ $(EXTENSION).control: $(EXTENSION).control.in Makefile
 	sed -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
 EXTRA_CLEAN = \
-  $(LOCAL_BINS) \
+  $(LOCAL_BIN) \
 	sql/$(EXTENSION)--$(EXTVERSION).sql \
 	$(EXTENSION).control \
 	$(META) upgrade-scripts
@@ -84,7 +84,7 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)--$(EXTVERSION)next.sql
 	cat $< > upgrade-scripts/$(EXTENSION)--$(EXTVERSION)next--$(EXTVERSION).sql
 
-all: upgrade-scripts $(LOCAL_SHARES) $(LOCAL_BINS)
+all: upgrade-scripts $(LOCAL_SHARE) $(LOCAL_BIN)
 
 deb:
 	pg_buildext updatecontrol
@@ -175,13 +175,13 @@ uninstall: local-uninstall
 
 local-install:
 	$(INSTALL) -d $(DESTDIR)$(LOCAL_BINDIR)
-	$(INSTALL) $(LOCAL_BINS) $(DESTDIR)$(LOCAL_BINDIR)
+	$(INSTALL) $(LOCAL_BIN) $(DESTDIR)$(LOCAL_BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(LOCAL_SHAREDIR)
-	$(INSTALL) -m 644 $(LOCAL_SHARES) $(DESTDIR)$(LOCAL_SHAREDIR)
+	$(INSTALL) -m 644 $(LOCAL_SHARE) $(DESTDIR)$(LOCAL_SHAREDIR)
 
 local-uninstall:
-	for b in $(LOCAL_BINS); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
-	for b in $(LOCAL_SHARES); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
+	for b in $(LOCAL_BIN); do rm -f $(DESTIDIR)$(LOCAL_BINDIR)/$$b; done
+	for b in $(LOCAL_SHARE); do rm -f $(DESTIDIR)$(LOCAL_SHAREDIR)/$$b; done
 
 dist: distclean $(DISTFILES)
 	mkdir $(EXTENSION)-$(EXTVERSION)
