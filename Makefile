@@ -26,6 +26,9 @@ DISTFILES = \
 
 META         = META.json
 EXTENSION    = $(shell grep -m 1 '"name":' $(META).in | sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
+ifeq ($(EXTENSION),)
+$(error "EXTENSION is empty")
+endif
 
 TEMPLATE_SQL_INSTALLDIR = $(DESTDIR)/usr/share/dbpatch/sql/
 
