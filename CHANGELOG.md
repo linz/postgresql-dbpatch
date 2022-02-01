@@ -22,6 +22,13 @@ All notable changes for the PostgreSQL dbpatch extension are documented in this 
 - Make sure all upgrade scripts are always installed
 - ALlow upgrading from 1.4.0
 
+## [1.4.1dev] - 2019-MM-DD
+
+### Fixed
+
+- Installation of upgrade scripts on `make install` (#44)
+- `dbpatch-loader` handling of --version switch (#46)
+
 ## [1.4.0] - 2019-01-14
 
 ### Improved
