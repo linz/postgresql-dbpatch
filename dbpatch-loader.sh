@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -o errexit
+
 TGT_SCHEMA=
 TGT_DB=
 EXT_MODE=on
@@ -16,7 +18,8 @@ while test -n "$1"; do
   if test "$1" = "--no-extension"; then
     EXT_MODE=off
   elif test "$1" = "--version"; then
-    VER=$1; shift
+    shift
+    VER=$1;
   elif test -z "${TGT_DB}"; then
     TGT_DB=$1
   elif test -z "${TGT_SCHEMA}"; then
@@ -28,16 +31,16 @@ while test -n "$1"; do
 done
 
 if test -z "$TGT_DB"; then
-  echo "Usage: $0 [--no-extension] [--version <ver>] <dbname> [<schema>]" >&2
+  echo "Usage: $0 [--no-extension] [--version <ver>] { <dbname> | - } [<schema>]" >&2
   exit 1
 fi
 
-export PGDATABASE=$TGT_DB
+export PGDATABASE="$TGT_DB"
 
 if test -z "${VER}"; then
 # TPL_FILE is expected to have the following format:
 #   dbpatch-1.4.0dev.sql.tpl
-  VER=`ls ${EXT_DIR}/${EXT_NAME}-*.sql.tpl | sed "s/^.*${EXT_NAME}-//;s/\.sql\.tpl//" | tail -1`
+  VER="$(echo "${EXT_DIR}/${EXT_NAME}"-*.sql.tpl | sed "s/^.*${EXT_NAME}-//;s/\.sql\.tpl//" | tail -1)"
   if test -z "${VER}"; then
     echo "Cannot find template loader, maybe set DBPATCH_EXT_DIR?" >&2
     exit 1
@@ -47,14 +50,20 @@ fi
 TPL_FILE=${EXT_DIR}/${EXT_NAME}-${VER}.sql.tpl
 
 if test -z "$TGT_SCHEMA"; then
-  TGT_SCHEMA=`psql -tXAc "select current_schema()"`
+  if test "$TGT_DB" = "-"; then
+    echo "Target schema is required in standard output mode" >&2
+    exit 1
+  fi
+  TGT_SCHEMA="$(psql -tXAc "select current_schema()")"
   if test -z "$TGT_SCHEMA"; then exit 1; fi # failed connection to db ?
 fi
 
-echo "Loading ver ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})";
+echo "Loading ${EXT_NAME} ${VER} in ${TGT_DB}.${TGT_SCHEMA} (EXT_MODE ${EXT_MODE})" >&2
+
+{
 
 if test "${EXT_MODE}" = 'on'; then
-  cat <<EOF | psql -XtA -o /dev/null
+  cat <<EOF
 DO \$\$
   DECLARE
     rec record;
@@ -106,7 +115,11 @@ DO \$\$
   END
 \$\$ LANGUAGE 'plpgsql';
 EOF
+else # EXT_MODE off
+  sed "s/@extschema@/${TGT_SCHEMA}/g" "$TPL_FILE"
+fi
+} | if [ "$TGT_DB" = "-" ]; then
+  cat
 else
-  cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g" |
-  psql -X --set ON_ERROR_STOP=1 > /dev/null
+  psql -XtA --set ON_ERROR_STOP=1 -o /dev/null
 fi
