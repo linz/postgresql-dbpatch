@@ -29,13 +29,7 @@ ifeq ($(EXTENSION),)
 $(error "EXTENSION is empty")
 endif
 
-UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
-  1.2.0dev 1.2.0 \
-  1.3.0dev 1.3.0 \
-  1.4.0dev 1.4.0 \
-  1.5.0dev 1.5.0 \
-  1.6.0dev 1.6.0 \
-  1.7.0dev
+UPGRADEABLE_VERSIONS = $(shell test/ci/get_versions.bash)
 
 UPGRADE_SCRIPTS_BUILT = $(patsubst %,upgrade-scripts/$(EXTENSION)--%--$(EXTVERSION).sql,$(UPGRADEABLE_VERSIONS))
 
