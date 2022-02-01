@@ -29,8 +29,6 @@ TEMPLATE_SQL_INSTALLDIR = $(DESTDIR)/usr/share/dbpatch/sql/
 TGT_VERSION=$(subst dev,,$(EXTVERSION))
 PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/\.sql//' | grep -Fv $(TGT_VERSION) | sort -n | tail -1)
 
-SED = sed
-
 UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
   1.2.0dev 1.2.0 \
   1.3.0dev 1.3.0 \
@@ -55,14 +53,14 @@ PG_CONFIG    ?= pg_config
 all: $(EXTENSION)--$(EXTVERSION).sql
 
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
-	$(SED) -e 's|\$$Id\$$|$(REVISION)|' $< | \
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
+	sed -e 's|\$$Id\$$|$(REVISION)|' $< | \
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' > $@
 
 $(META): $(META).in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
 $(EXTENSION).control: $(EXTENSION).control.in Makefile
-	$(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
+	sed -e 's/@@VERSION@@/$(EXTVERSION)/' $< > $@
 
 EXTRA_CLEAN = \
   $(LOCAL_BINS) \
@@ -122,13 +120,13 @@ test/sql/preparedb: test/sql/preparedb.in
       else \
         UPGRADE_FROM=""; \
       fi; \
-      $(SED) -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
+      sed -e 's/^--UPGRADE-- //' -e "s/@@FROM_VERSION@@/$$UPGRADE_FROM/"; \
 	  elif test "${PREPAREDB_NOEXTENSION}" = 1; then \
       grep -v dbpatch; \
     else \
       cat; \
     fi | \
-	  $(SED) -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
+	  sed -e 's/@@VERSION@@/$(EXTVERSION)/' -e 's/@@FROM_VERSION@@//' > $@
 
 installcheck: testdeps
 
