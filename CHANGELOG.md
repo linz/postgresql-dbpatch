@@ -2,6 +2,12 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.7.0] - 2022-01-12
+
+### Improved
+
+- Updated supported versions of Postgres
+
 ## [1.6.0] - 2021-01-05
 
 ### Added
