@@ -2,6 +2,12 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.0] - 2022-01-27
+
+### Improved
+
+- Add linting
+
 ## [1.7.0] - 2022-01-12
 
 ### Improved
