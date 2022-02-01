@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.7.0dev
+EXTVERSION = $(lastword $(UPGRADEABLE_VERSIONS))
 REVISION  = $(shell git describe --always)
 ifeq ($(REVISION),)
 $(error "REVISION is empty")
