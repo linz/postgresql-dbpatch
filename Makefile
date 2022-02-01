@@ -51,9 +51,7 @@ REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test
 
 PG_CONFIG    ?= pg_config
-PG91         = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo no || echo yes)
 
-ifeq ($(PG91),yes)
 all: $(EXTENSION)--$(EXTVERSION).sql
 
 $(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql $(META) Makefile
@@ -71,7 +69,6 @@ EXTRA_CLEAN = \
 	sql/$(EXTENSION)--$(EXTVERSION).sql \
 	$(EXTENSION).control \
 	$(META) upgrade-scripts
-endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
