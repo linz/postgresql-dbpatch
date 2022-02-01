@@ -70,6 +70,9 @@ EXTRA_CLEAN = \
 	$(META) upgrade-scripts
 
 PGXS := $(shell pg_config --pgxs)
+ifeq ($(PGXS),)
+$(error "PGXS is empty")
+endif
 include $(PGXS)
 
 $(UPGRADE_SCRIPTS_BUILT): upgrade-scripts
