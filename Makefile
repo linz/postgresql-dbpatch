@@ -34,6 +34,9 @@ TEMPLATE_SQL_INSTALLDIR = $(DESTDIR)/usr/share/dbpatch/sql/
 
 TGT_VERSION=$(subst dev,,$(EXTVERSION))
 PREV_VERSION=$(shell ls sql/dbpatch--*--*.sql | sed 's/.*$(EXTENSION)--.*--//;s/\.sql//' | grep -Fv $(TGT_VERSION) | sort -n | tail -1)
+ifeq ($(PREV_VERSION),)
+$(error "PREV_VERSION is empty")
+endif
 
 UPGRADEABLE_VERSIONS = 1.0.0 1.0.1 1.1.0dev 1.1.0 \
   1.2.0dev 1.2.0 \
