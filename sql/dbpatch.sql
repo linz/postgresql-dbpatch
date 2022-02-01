@@ -58,7 +58,7 @@ BEGIN
         END LOOP;
     EXCEPTION
         WHEN others THEN
-            RAISE EXCEPTION 'Could not applied % patch using %. ERROR: %',
+            RAISE EXCEPTION 'Could not apply % patch using %. ERROR: %',
                 p_patch_name, v_sql, SQLERRM;
     END;
 

@@ -1,6 +1,6 @@
 Source: postgresql-dbpatch
 Section: database
-Priority: extra
+Priority: optional
 Build-Depends: debhelper (>= 7),
                postgresql-server-dev-all
 Standards-Version: 3.9.5
@@ -8,30 +8,6 @@ Maintainer: Ivan Mincik <imincik@linz.govt.nz>
 Homepage: http://www.linz.govt.nz
 Vcs-Git: git://github.com/linz/postgresql-dbpatch.git
 Vcs-Browser: https://github.com/linz/postgresql-dbpatch
-
-Package: postgresql-9.5-dbpatch
-Architecture: all
-Depends: ${misc:Depends},
-         postgresql-9.5
-Recommends:
-Description: PostgreSQL database patch change management extension. This
- extension supports conducting database changes and deploying them in a robust
- and automated way.
- .
- This package contains the EXTENSION version of the code
- (requires access to server filesystem)
-
-Package: postgresql-9.6-dbpatch
-Architecture: all
-Depends: ${misc:Depends},
-         postgresql-9.6
-Recommends:
-Description: PostgreSQL database patch change management extension. This
- extension supports conducting database changes and deploying them in a robust
- and automated way.
- .
- This package contains the EXTENSION version of the code
- (requires access to server filesystem)
 
 Package: postgresql-10-dbpatch
 Architecture: all
@@ -57,6 +33,42 @@ Description: PostgreSQL database patch change management extension. This
  This package contains the EXTENSION version of the code
  (requires access to server filesystem)
 
+Package: postgresql-12-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-12
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
+Package: postgresql-13-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-13
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
+Package: postgresql-14-dbpatch
+Architecture: all
+Depends: ${misc:Depends},
+         postgresql-14
+Recommends:
+Description: PostgreSQL database patch change management extension. This
+ extension supports conducting database changes and deploying them in a robust
+ and automated way.
+ .
+ This package contains the EXTENSION version of the code
+ (requires access to server filesystem)
+
 Package: dbpatch
 Architecture: all
 Depends: ${misc:Depends}
@@ -66,4 +78,4 @@ Description: PostgreSQL database patch change management extension. This
  and automated way.
  .
  This package contains the schema loader usable to load the extension in any
- PostgreSQL database mechanism withouth having access to the server filesystem
+ PostgreSQL database mechanism without having access to the server filesystem

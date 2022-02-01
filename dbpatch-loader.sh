@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -o errexit
+
 TGT_SCHEMA=
 TGT_DB=
 EXT_MODE=on
@@ -33,12 +35,12 @@ if test -z "$TGT_DB"; then
   exit 1
 fi
 
-export PGDATABASE=$TGT_DB
+export PGDATABASE="$TGT_DB"
 
 if test -z "${VER}"; then
 # TPL_FILE is expected to have the following format:
 #   dbpatch-1.4.0dev.sql.tpl
-  VER=`ls ${EXT_DIR}/${EXT_NAME}-*.sql.tpl | sed "s/^.*${EXT_NAME}-//;s/\.sql\.tpl//" | tail -1`
+  VER="$(echo "${EXT_DIR}/${EXT_NAME}"-*.sql.tpl | sed "s/^.*${EXT_NAME}-//;s/\.sql\.tpl//" | tail -1)"
   if test -z "${VER}"; then
     echo "Cannot find template loader, maybe set DBPATCH_EXT_DIR?" >&2
     exit 1
@@ -52,7 +54,7 @@ if test -z "$TGT_SCHEMA"; then
     echo "Target schema is required in standard output mode" >&2
     exit 1
   fi
-  TGT_SCHEMA=`psql -tXAc "select current_schema()"`
+  TGT_SCHEMA="$(psql -tXAc "select current_schema()")"
   if test -z "$TGT_SCHEMA"; then exit 1; fi # failed connection to db ?
 fi
 
@@ -114,7 +116,7 @@ DO \$\$
 \$\$ LANGUAGE 'plpgsql';
 EOF
 else # EXT_MODE off
-  cat ${TPL_FILE} | sed "s/@extschema@/${TGT_SCHEMA}/g"
+  sed "s/@extschema@/${TGT_SCHEMA}/g" "$TPL_FILE"
 fi
 } | if [ "$TGT_DB" = "-" ]; then
   cat
