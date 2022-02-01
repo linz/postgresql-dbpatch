@@ -1,6 +1,9 @@
 
 EXTVERSION = 1.7.0dev
-REVISION  = $(shell test -d .git && which git > /dev/null && git describe --always)
+REVISION  = $(shell git describe --always)
+ifeq ($(REVISION),)
+$(error "REVISION is empty")
+endif
 
 PREFIX ?= /usr/local
 LOCAL_BINDIR = $(PREFIX)/bin
