@@ -2,6 +2,12 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.1] - 2022-02-02
+
+### Improved
+
+- Build on Ubuntu 20.04 (Focal)
+
 ## [1.8.0] - 2022-01-27
 
 ### Improved
