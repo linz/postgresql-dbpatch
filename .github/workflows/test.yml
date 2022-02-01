@@ -1,4 +1,4 @@
-name: test
+name: Test
 
 on:
   pull_request:
@@ -17,12 +17,15 @@ on:
 
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v2.4.0
+
       - name: Install Nix
         uses: cachix/install-nix-action@v16
+
       - name: Run pre-commit hooks
         run: nix-shell --pure --run 'pre-commit run --all-files'
 
@@ -38,7 +41,8 @@ jobs:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
-      - uses: actions/checkout@v2.4.0
+      - name: Check out repository
+        uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
 
@@ -65,32 +69,32 @@ jobs:
               postgresql-${{ matrix.pg }}-pgtap \
               postgresql-server-dev-all \
               postgresql-server-dev-${{ matrix.pg }}
+
       - name: Setup PostgreSQL user
         run: |
           whoami
           sudo -u postgres createuser -s "$USER"
           sudo -u postgres createuser -s root
+
       - name: Build
-        run: |
-          # Build
-          make
+        run: make
+
       - name: Test build
-        run: |
-          # Pre-install tests
-          make check
+        run: make check
+
       - name: Install
-        run: |
-          sudo env "PATH=$PATH" make install
+        run: sudo env "PATH=$PATH" make install
+
       - name: Test installation
         run: |
           # Post-install tests
           make installcheck || { cat regression.diffs; false; }
           make installcheck-loader || { cat regression.diffs; false; }
           make installcheck-loader-noext || { cat regression.diffs; false; }
-      - name: Test upgrades
-        run: |
-          # Test upgrades from all tagged versions
-          sudo env "PATH=$PATH" test/ci/test_all_upgrades.bash
+
+      - name: Test upgrades from all tagged versions
+        run: sudo env "PATH=$PATH" test/ci/test_all_upgrades.bash
+
       - name: Test packaging
         run: |
           # Build the packages
@@ -124,7 +128,8 @@ jobs:
           - bionic
           - focal
     steps:
-      - uses: actions/checkout@v2.4.0
+      - name: Check out repository
+        uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
 
@@ -147,7 +152,8 @@ jobs:
           fi
           echo "REPO=$REPO" | tee -a $GITHUB_ENV
 
-      - uses: linz/linz-software-repository@v6
+      - name: Build and upload to packagecloud
+        uses: linz/linz-software-repository@v7
         with:
           release: ${{ matrix.release }}
           packagecloud_token: ${{ secrets.LINZCI_PACKAGECLOUD_TOKEN }}
