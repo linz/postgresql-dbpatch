@@ -153,7 +153,7 @@ jobs:
           echo "REPO=$REPO" | tee -a $GITHUB_ENV
 
       - name: Build and upload to packagecloud
-        uses: linz/linz-software-repository@v7
+        uses: linz/linz-software-repository@v8
         with:
           release: ${{ matrix.release }}
           packagecloud_token: ${{ secrets.LINZCI_PACKAGECLOUD_TOKEN }}
