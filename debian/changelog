@@ -1,3 +1,9 @@
+postgresql-dbpatch (1.8.1-linz~bionic) bionic; urgency=medium
+
+  * New version
+
+ -- GitHub <noreply@github.com>  Wed, 02 Feb 2022 02:28:01 +0000
+
 postgresql-dbpatch (1.6.0-linz~bionic) bionic; urgency=medium
 
   * New version
