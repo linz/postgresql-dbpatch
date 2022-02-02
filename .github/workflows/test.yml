@@ -127,6 +127,8 @@ jobs:
         release:
           - bionic
           - focal
+      max-parallel: 1
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v2.4.0
