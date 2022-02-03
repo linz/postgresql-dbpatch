@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DEBSOURCE="$(dpkg-parsechangelog | sed -ne '/^Source:/{s/Source:[[:space:]][[:space:]]*//p;q}')"
 DEBVERSION="$(dpkg-parsechangelog | sed -ne '/^Version:/{s/Version:[[:space:]][[:space:]]*//p;q}')"
