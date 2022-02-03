@@ -99,7 +99,7 @@ DO \$\$
       IF rec IS NOT NULL THEN
         RAISE EXCEPTION 'dbpatch is already installed as unpackaged in schema %',
           rec.nspname
-        USING HINT = 'Try CREATE EXTENSION dbpatch FROM unpackaged '
+        USING HINT = 'Try CREATE EXTENSION dbpatch '
                      'or pass --no-extension switch to loader';
       END IF;
       CREATE EXTENSION ${EXT_NAME}
