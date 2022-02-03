@@ -14,4 +14,3 @@ fi
 echo "Tagging ${DEBSOURCE}-${DEBVERSION} (dist=${DEBDIST}, urgency=${DEBURGENCY}) as 'debian/${DEBSOURCE}-${DEBVERSION}'"
 
 git tag -s "debian/${DEBSOURCE}-${DEBVERSION}" -m "${DEBSOURCE}-${DEBVERSION} (dist=${DEBDIST}, urgency=${DEBURGENCY})"
-
