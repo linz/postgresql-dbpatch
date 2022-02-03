@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -o errexit -o noclobber -o nounset -o pipefail
+shopt -s failglob inherit_errexit
+
 DEBSOURCE="$(dpkg-parsechangelog | sed -ne '/^Source:/{s/Source:[[:space:]][[:space:]]*//p;q}')"
 DEBVERSION="$(dpkg-parsechangelog | sed -ne '/^Version:/{s/Version:[[:space:]][[:space:]]*//p;q}')"
 DEBDIST="$(dpkg-parsechangelog | sed -ne '/^Distribution:/{s/Distribution:[[:space:]][[:space:]]*//p;q}')"
