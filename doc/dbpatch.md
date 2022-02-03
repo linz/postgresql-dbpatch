@@ -117,7 +117,7 @@ extension:
 If you already have the dbpatch functions and config table installed in your database not using the
 PostgreSQL extension you can upgrade it using the following command:
 
-    CREATE EXTENSION dbpatch FROM unpackaged SCHEMA _patches;
+    CREATE EXTENSION dbpatch SCHEMA _patches;
 
 This example will upgrade the patch management software to an extension from the existing
 "\_patches" schema.
