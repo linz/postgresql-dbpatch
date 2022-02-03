@@ -46,19 +46,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get -y --purge remove \
+          sudo apt-get --assume-yes --purge remove \
               libpq5 \
               libpq-dev \
               php*fpm \
               postgresql \
               postgresql-client-common \
               postgresql-common
-          sudo rm -rf /var/lib/postgresql
+          sudo rm --force --recursive /var/lib/postgresql
           sudo apt-get install curl ca-certificates gnupg
           curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release --codename --short)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
           sudo apt-get update
-          sudo apt-get install -y \
+          sudo apt-get install --assume-yes \
               debhelper \
               fakeroot \
               libtap-parser-sourcehandler-pgtap-perl \
@@ -71,8 +71,8 @@ jobs:
       - name: Setup PostgreSQL user
         run: |
           whoami
-          sudo -u postgres createuser -s "$USER"
-          sudo -u postgres createuser -s root
+          sudo --user=postgres createuser --superuser "$USER"
+          sudo --user=postgres createuser --superuser root
 
       - name: Build
         run: make
@@ -100,12 +100,12 @@ jobs:
           # Uninstall directly installed files
           sudo make uninstall
           # Install postgresql-agnostic dbpatch package
-          sudo dpkg -i ../dbpatch_*.deb
+          sudo dpkg --install ../dbpatch_*.deb
           dpkg -L dbpatch
           # Run post-install postgresql-agnostic tests
           make installcheck-loader-noext || { cat regression.diffs; false; }
           # Install postgresql-specific dbpatch package
-          sudo dpkg -i ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
+          sudo dpkg --install ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
           # Run post-install extension based checks
           make installcheck || { cat regression.diffs; false; }
           make installcheck-loader || { cat regression.diffs; false; }
@@ -150,7 +150,7 @@ jobs:
               REPO=dev
             fi
           fi
-          echo "REPO=$REPO" | tee -a $GITHUB_ENV
+          echo "REPO=$REPO" | tee --append $GITHUB_ENV
 
       - name: Build and upload to packagecloud
         uses: linz/linz-software-repository@v8
