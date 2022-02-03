@@ -73,7 +73,7 @@ If you want to install dbpatch into a specific schema run:
 If you've upgraded your cluster to PostgreSQL 9.1 and already had dbpatch installed, you can upgrade
 it to a properly packaged extension with:
 
-    CREATE EXTENSION dbpatch FROM unpackaged;
+    CREATE EXTENSION dbpatch;
 
 For versions of PostgreSQL less than 9.1.0, you'll need to run the installation script:
 
