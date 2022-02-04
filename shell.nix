@@ -14,6 +14,14 @@ pkgs.mkShell {
     pkgs.docker
     pkgs.gitFull
     pkgs.nodejs
+    (
+      pkgs.postgresql.withPackages (
+        ps: [
+          ps.pgtap
+        ]
+      )
+    )
+    pkgs.perlPackages.TAPParserSourceHandlerpgTAP
     pkgs.pre-commit
     pkgs.which
   ];
