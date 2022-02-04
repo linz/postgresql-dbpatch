@@ -48,6 +48,19 @@ You need to run the test suite using a super user, such as the default "postgres
 
     make installcheck PGUSER=postgres
 
+Using Nix:
+
+```shell
+working_directory="$(mktemp --directory)" \
+&& echo "$working_directory" \
+&& export DESTDIR="${working_directory}/build" PGDATA="${working_directory}/postgres" \
+&& export PGHOST="$PGDATA" \
+&& nix-shell --keep PGDATA --pure --run 'initdb' \
+&& nix-shell --keep PGDATA --keep PGHOST --pure --run 'pg_ctl --log="${PGDATA}/postgres.log" --options=--unix_socket_directories="$PGHOST" start' \
+&& nix-shell --keep DESTDIR --keep PGHOST --pure --run 'make all check install installcheck' \
+&& nix-shell --keep PGDATA --pure --run 'pg_ctl stop'
+```
+
 ## Building Debian packaging
 
 Build the Debian packages using the following command:
