@@ -27,8 +27,8 @@ jobs:
       - name: Run pre-commit hooks
         run: nix-shell --pure --run 'pre-commit run --all-files'
 
-  test:
-    name: Test PostgreSQL ${{ matrix.pg }} on ${{ matrix.os }}
+  test-source:
+    name: Test PostgreSQL ${{ matrix.pg }} source install on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -102,7 +102,7 @@ jobs:
       - name: Test build
         run: make check
 
-      - name: Install from source
+      - name: Install
         run: sudo env "PATH=$PATH" make install
 
       - name: Test installation
@@ -117,11 +117,78 @@ jobs:
       - name: Test upgrades from all tagged versions
         run: sudo env "PATH=$PATH" test/ci/test_all_upgrades.bash
 
+      - name: Uninstall
+        run: sudo make uninstall
+
+  test-package:
+    name: Test PostgreSQL ${{ matrix.pg }} package install on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        pg: ['10', '12', '14']
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+    env:
+      # Set PATH as postgresql-server-dev-all pretends version is 11
+      PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2.4.0
+
+      - name: Remove conflicting packages
+        run: |
+          sudo apt-get --assume-yes --purge remove \
+            libpq5 \
+            libpq-dev \
+            php*fpm \
+            postgresql \
+            postgresql-client-common \
+            postgresql-common
+
+      - name: Remove PostgreSQL install files
+        run: sudo rm --force --recursive /var/lib/postgresql
+
+      - name: Update package database
+        run: sudo apt-get update
+
+      - name: Install setup dependencies
+        run: sudo apt-get --assume-yes install curl ca-certificates gnupg
+
+      - name: Trust PostgreSQL repository key
+        run: curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+      - name: Get release codename
+        id: distro
+        run: echo "::set-output name=codename::$(lsb_release --codename --short)"
+
+      - name: Add
+        run:
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ steps.distro.outputs.codename
+          }}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+
+      - name: Update package database with PostgreSQL repo
+        run: sudo apt-get update
+
+      - name: Install test dependencies
+        run: |
+          sudo apt-get install --assume-yes \
+            debhelper \
+            fakeroot \
+            libtap-parser-sourcehandler-pgtap-perl \
+            postgresql-client-${{ matrix.pg }} \
+            postgresql-${{ matrix.pg }} \
+            postgresql-${{ matrix.pg }}-pgtap \
+            postgresql-server-dev-all \
+            postgresql-server-dev-${{ matrix.pg }}
+
+      - name: Setup current user as PostgreSQL superuser
+        run: sudo --user=postgres createuser --superuser "$USER"
+
+      - name: Setup PostgreSQL root user
+        run: sudo --user=postgres createuser --superuser root
+
       - name: Build the packages
         run: PG_SUPPORTED_VERSIONS=${{ matrix.pg }} make deb
-
-      - name: Uninstall directly installed files
-        run: sudo make uninstall
 
       - name: Install PostgreSQL-agnostic package
         run: sudo dpkg --install ../dbpatch_*.deb
@@ -135,22 +202,23 @@ jobs:
       - name: Install PostgreSQL-specific dbpatch package
         run: sudo dpkg --install ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
 
-      - name: Test installation again
+      - name: Test installation
         run: make installcheck || { cat regression.diffs; false; }
 
-      - name: Test loader again
+      - name: Test loader
         run: make installcheck-loader || { cat regression.diffs; false; }
 
-      - name: Test building pacakges for all supported versions
+      - name: Build pacakges for all supported versions
         run: make deb
 
-      - name: Test .deb file
+      - name: Test package
         run: make deb-check
 
   package:
     needs:
       - lint
-      - test
+      - test-source
+      - test-package
     name: Package for Debian
     runs-on: ubuntu-18.04
     strategy:
