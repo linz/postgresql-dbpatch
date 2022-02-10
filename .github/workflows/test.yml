@@ -212,13 +212,21 @@ jobs:
       fail-fast: false
       matrix:
         pg: ['10', '12', '14']
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        include:
+          - os: ubuntu-18.04
+            release: bionic
+          - os: ubuntu-20.04
+            release: focal
+          - os: ubuntu-latest
+            release: focal
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
       - name: Check out repository
         uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0
 
       - name: Remove conflicting packages
         run: |
@@ -272,11 +280,15 @@ jobs:
       - name: Setup PostgreSQL root user
         run: sudo --user=postgres createuser --superuser root
 
-      - name: Build the packages
-        run: PG_SUPPORTED_VERSIONS=${{ matrix.pg }} make deb
+      - name: Build local debian package
+        uses: linz/linz-software-repository@v8
+        with:
+          release: ${{ matrix.release }}
+        env:
+          PG_SUPPORTED_VERSIONS: ${{ matrix.pg }}
 
       - name: Install PostgreSQL-agnostic package
-        run: sudo dpkg --install ../dbpatch_*.deb
+        run: sudo dpkg --install build-area/dbpatch_*.deb
 
       - name: Show package contents
         run: dpkg -L dbpatch
@@ -285,7 +297,7 @@ jobs:
         run: make installcheck-loader-noext || { cat regression.diffs; false; }
 
       - name: Install PostgreSQL-specific dbpatch package
-        run: sudo dpkg --install ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
+        run: sudo dpkg --install build-area/postgresql-${{ matrix.pg }}-dbpatch_*.deb
 
       - name: Test installation
         run: make installcheck || { cat regression.diffs; false; }
@@ -293,8 +305,10 @@ jobs:
       - name: Test loader
         run: make installcheck-loader || { cat regression.diffs; false; }
 
-      - name: Build pacakges for all supported versions
-        run: make deb
+      - name: Build packages for all supported versions
+        uses: linz/linz-software-repository@v8
+        with:
+          release: ${{ matrix.release }}
 
       - name: Test package
         run: make deb-check

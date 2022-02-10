@@ -80,13 +80,10 @@ upgrade-scripts: $(EXTENSION)--$(EXTVERSION).sql
 
 all: upgrade-scripts $(LOCAL_SHARE) $(LOCAL_BIN)
 
-deb:
-	pg_buildext updatecontrol
-	dpkg-buildpackage -us -uc -b
-
 deb-check:
+	#TODO: Verify that packages actually exist
 	# Test postgresql dependent packages do NOT contain loader
-	@for pkg in ../postgresql-*dbpatch*.deb; do \
+	@for pkg in build-area/postgresql-*dbpatch*.deb; do \
 		dpkg -c $$pkg > $$pkg.contents || break; \
 		if grep -q loader $$pkg.contents; then  \
                 echo "Package $$pkg contains loader" >&2 \
@@ -94,7 +91,7 @@ deb-check:
 		fi; \
 	done
 	# Test postgresql-agnostic package DOES contain loader
-	@for pkg in ../dbpatch*.deb; do \
+	@for pkg in build-area/dbpatch*.deb; do \
 		dpkg -c $$pkg > $$pkg.contents || break; \
 			if grep -q loader $$pkg.contents; then  \
 				:; \
