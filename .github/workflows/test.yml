@@ -211,9 +211,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [bionic, focal]
         pg: ['10', '12', '14']
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        include:
+          - os: ubuntu-18.04
+            release: bionic
+          - os: ubuntu-20.04
+            release: focal
+          - os: ubuntu-latest
+            release: focal
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
