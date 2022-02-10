@@ -297,7 +297,7 @@ jobs:
         run: make installcheck-loader-noext || { cat regression.diffs; false; }
 
       - name: Install PostgreSQL-specific dbpatch package
-        run: sudo dpkg --install ../postgresql-${{ matrix.pg }}-dbpatch_*.deb
+        run: sudo dpkg --install build-area/postgresql-${{ matrix.pg }}-dbpatch_*.deb
 
       - name: Test installation
         run: make installcheck || { cat regression.diffs; false; }
