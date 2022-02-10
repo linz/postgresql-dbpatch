@@ -211,6 +211,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        release: [bionic, focal]
         pg: ['10', '12', '14']
         os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
     env:
@@ -272,11 +273,15 @@ jobs:
       - name: Setup PostgreSQL root user
         run: sudo --user=postgres createuser --superuser root
 
-      - name: Build the packages
-        run: PG_SUPPORTED_VERSIONS=${{ matrix.pg }} make deb
+      - name: Build local debian package
+        uses: linz/linz-software-repository@v8
+        with:
+          release: ${{ matrix.release }}
+        env:
+          PG_SUPPORTED_VERSIONS: ${{ matrix.pg }}
 
       - name: Install PostgreSQL-agnostic package
-        run: sudo dpkg --install ../dbpatch_*.deb
+        run: sudo dpkg --install build-area/*dbpatch_*.deb
 
       - name: Show package contents
         run: dpkg -L dbpatch
@@ -293,8 +298,10 @@ jobs:
       - name: Test loader
         run: make installcheck-loader || { cat regression.diffs; false; }
 
-      - name: Build pacakges for all supported versions
-        run: make deb
+      - name: Build packages for all supported versions
+        uses: linz/linz-software-repository@v8
+        with:
+          release: ${{ matrix.release }}
 
       - name: Test package
         run: make deb-check
