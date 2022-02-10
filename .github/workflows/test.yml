@@ -288,7 +288,7 @@ jobs:
           PG_SUPPORTED_VERSIONS: ${{ matrix.pg }}
 
       - name: Install PostgreSQL-agnostic package
-        run: sudo dpkg --install build-area/*dbpatch_*.deb
+        run: sudo dpkg --install build-area/dbpatch_*.deb
 
       - name: Show package contents
         run: dpkg -L dbpatch
