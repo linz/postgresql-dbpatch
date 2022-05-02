@@ -1,3 +1,9 @@
+postgresql-dbpatch (1.8.4-linz~focal) focal; urgency=medium
+
+  * New version
+
+ -- Victor Engmark <vengmark@linz.govt.nz>  Mon, 02 May 2022 22:35:21 +0000
+
 postgresql-dbpatch (1.8.3-linz~bionic) bionic; urgency=medium
 
   * New version
