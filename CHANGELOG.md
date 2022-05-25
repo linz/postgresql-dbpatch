@@ -2,6 +2,24 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.4] - 2022-05-03
+
+### Fixed
+
+- Bump EXTVERSION _after_ release
+
+## [1.8.3] - 2022-05-03
+
+### Fixed
+
+- Force pushing changes to origin remote
+
+## [1.8.2] - 2022-05-03
+
+### Fixed
+
+- Hard-code extension version
+
 ## [1.8.1] - 2022-02-02
 
 ### Improved

@@ -10,6 +10,8 @@ on:
       - master
       - packagecloud
       - 'release-*'
+    tags-ignore:
+      - 'debian/*'
   schedule:
     - cron: '0 12 * * 0'
 
@@ -363,6 +365,7 @@ jobs:
           release: ${{ matrix.release }}
           packagecloud_token: ${{ secrets.LINZCI_PACKAGECLOUD_TOKEN }}
           packagecloud_repository: ${{ env.REPO }}
+          push_to_git_remote: origin
 
   finalise:
     if: always()

@@ -1,5 +1,5 @@
 
-EXTVERSION = 1.8.2dev
+EXTVERSION = 1.8.4dev
 REVISION  = $(shell git describe --always)
 ifeq ($(REVISION),)
 $(warning "REVISION is empty")
