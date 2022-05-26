@@ -2,6 +2,12 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.5] - 2022-05-26
+
+### Fixed
+
+No-op release to make sure the latest Git tag is in the history of origin/master.
+
 ## [1.8.4] - 2022-05-03
 
 ### Fixed
