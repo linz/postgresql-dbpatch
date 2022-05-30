@@ -16,7 +16,7 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         pg: ['10', '12', '14']
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, ubuntu-latest]
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
@@ -127,7 +127,7 @@ jobs:
       fail-fast: false
       matrix:
         pg: ['14']
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
@@ -217,8 +217,10 @@ jobs:
             release: bionic
           - os: ubuntu-20.04
             release: focal
+          - os: ubuntu-22.04
+            release: jammy
           - os: ubuntu-latest
-            release: focal
+            release: jammy
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
@@ -327,6 +329,7 @@ jobs:
         release:
           - bionic
           - focal
+          - jammy
       max-parallel: 1
 
     steps:
