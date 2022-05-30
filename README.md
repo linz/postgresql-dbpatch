@@ -112,6 +112,11 @@ Prerequisites: [Nix](https://nixos.org/download.html)
 
 Run `nix-shell --pure --run 'pre-commit run --all-files'`.
 
+## Release process
+
+See
+[linz-software-repository readme](https://github.com/linz/linz-software-repository/tree/v13#release-procedure=).
+
 ## License
 
 This project is under 3-clause BSD License, except where otherwise specified. See the LICENSE file
