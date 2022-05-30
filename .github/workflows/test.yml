@@ -1,15 +1,9 @@
 name: Test
 
 on:
-  pull_request:
-    branches-ignore:
-      - packagecloud
-      - 'release-*'
   push:
     branches:
-      - master
-      - packagecloud
-      - 'release-*'
+      - '*'
     tags:
       - '*'
   schedule:
