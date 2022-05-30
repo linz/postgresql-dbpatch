@@ -2,6 +2,12 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.6] - 2022-05-30
+
+### Improved
+
+Release for Ubuntu 22.04 (Jammy)
+
 ## [1.8.5] - 2022-05-26
 
 ### Fixed
