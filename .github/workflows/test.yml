@@ -2,14 +2,8 @@ name: Test
 
 on:
   pull_request:
-    branches-ignore:
-      - packagecloud
-      - 'release-*'
+    types: [opened, synchronize]
   push:
-    branches:
-      - master
-      - packagecloud
-      - 'release-*'
   schedule:
     - cron: '0 12 * * 0'
 
