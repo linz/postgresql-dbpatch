@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize]
   push:
+    tags:
+      - '*'
   schedule:
     - cron: '0 12 * * 0'
 
