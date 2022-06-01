@@ -279,7 +279,7 @@ jobs:
         run: sudo --user=postgres createuser --superuser root
 
       - name: Build local debian package
-        uses: linz/linz-software-repository@v13
+        uses: linz/linz-software-repository@v14
         with:
           release: ${{ matrix.release }}
         env:
@@ -304,7 +304,7 @@ jobs:
         run: make installcheck-loader || { cat regression.diffs; false; }
 
       - name: Build packages for all supported versions
-        uses: linz/linz-software-repository@v13
+        uses: linz/linz-software-repository@v14
         with:
           release: ${{ matrix.release }}
 
@@ -354,7 +354,7 @@ jobs:
           echo "REPO=$REPO" | tee --append $GITHUB_ENV
 
       - name: Build and upload to packagecloud
-        uses: linz/linz-software-repository@v13
+        uses: linz/linz-software-repository@v14
         with:
           release: ${{ matrix.release }}
           packagecloud_token: ${{ secrets.LINZCI_PACKAGECLOUD_TOKEN }}
