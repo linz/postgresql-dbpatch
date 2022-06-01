@@ -10,8 +10,6 @@ on:
       - master
       - packagecloud
       - 'release-*'
-    tags:
-      - '*'
   schedule:
     - cron: '0 12 * * 0'
 
