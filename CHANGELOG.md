@@ -2,7 +2,7 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
-## [1.8.7] - 2022-06-01
+## [1.8.7] (broken because of https://github.com/linz/linz-software-repository/issues/118) - 2022-06-01
 
 ### Improved
 
