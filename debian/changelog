@@ -1,3 +1,15 @@
+postgresql-dbpatch (1.8.7-linz~bionic) bionic; urgency=medium
+
+  * New version
+
+ -- Victor Engmark <vengmark@linz.govt.nz>  Wed, 01 Jun 2022 02:33:01 +0000
+
+postgresql-dbpatch (1.8.6-linz~bionic) bionic; urgency=medium
+
+  * New version
+
+ -- Victor Engmark <vengmark@linz.govt.nz>  Mon, 30 May 2022 04:30:22 +0000
+
 postgresql-dbpatch (1.8.5-linz~bionic) bionic; urgency=medium
 
   * New version

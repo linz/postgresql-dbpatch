@@ -2,6 +2,18 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [1.8.7] (broken because of https://github.com/linz/linz-software-repository/issues/118) - 2022-06-01
+
+### Improved
+
+Release for Ubuntu 22.04 (Jammy)
+
+## [1.8.6] (broken because of https://github.com/linz/linz-software-repository/issues/118) - 2022-05-30
+
+### Improved
+
+Release for Ubuntu 22.04 (Jammy)
+
 ## [1.8.5] - 2022-05-26
 
 ### Fixed
