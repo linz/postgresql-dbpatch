@@ -2,12 +2,10 @@ name: Test
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, reopened, synchronize]
   push:
     tags:
       - '*'
-  schedule:
-    - cron: '0 12 * * 0'
 
 jobs:
   lint:
@@ -15,10 +13,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.2.0
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v17
+        uses: cachix/install-nix-action@v18
 
       - name: Run pre-commit hooks
         run: nix-shell --pure --run 'pre-commit run --all-files'
@@ -36,7 +34,7 @@ jobs:
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
 
@@ -129,7 +127,7 @@ jobs:
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.2.0
 
       - name: Remove conflicting packages
         run: |
@@ -222,7 +220,7 @@ jobs:
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
 
@@ -330,7 +328,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
 
@@ -372,6 +370,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed
-        uses: re-actors/alls-green@release/v1
+        uses: re-actors/alls-green@v1.2.2
         with:
           jobs: ${{ toJSON(needs) }}
