@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pg: ['10', '12', '14']
+        pg: ['11', '12', '13', '14', '15']
         os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, ubuntu-latest]
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
@@ -121,8 +121,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pg: ['14']
-        os: [ubuntu-22.04]
+        pg: ['11', '12', '13', '14', '15']
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, ubuntu-latest]
     env:
       # Set PATH as postgresql-server-dev-all pretends version is 11
       PATH: /usr/lib/postgresql/${{ matrix.pg }}/bin:/bin:/usr/bin:/usr/local/bin
@@ -206,7 +206,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pg: ['10', '12', '14']
+        pg: ['11', '12', '13', '14'] # TODO: '15'
         include:
           - os: ubuntu-18.04
             release: bionic
@@ -317,7 +317,7 @@ jobs:
       - test-source-without-git-metadata
       - test-package
     name: Package for Debian
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
