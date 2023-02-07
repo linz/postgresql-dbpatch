@@ -2,6 +2,13 @@
 
 All notable changes for the PostgreSQL dbpatch extension are documented in this file.
 
+## [X.Y.Z] - YYYY-MM-DD
+
+### Removed
+
+Drop Ubuntu 18.04 support after
+[GitHub dropped their runner support](https://github.com/actions/runner-images/issues/6002).
+
 ## [1.8.8] - 2022-12-20
 
 ### Improved
