@@ -62,13 +62,12 @@ jobs:
         run: curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
       - name: Get release codename
-        id: distro
-        run: echo "::set-output name=codename::$(lsb_release --codename --short)"
+        run: echo "codename=$(lsb_release --codename --short)" >> "$GITHUB_ENV"
 
       - name: Add PostgreSQL APT repo
         run:
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ steps.distro.outputs.codename
-          }}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ env.codename }}-pgdg main" | sudo
+          tee /etc/apt/sources.list.d/pgdg.list
 
       - name: Update package database with PostgreSQL repo
         run: sudo apt-get update
@@ -153,13 +152,12 @@ jobs:
         run: curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
       - name: Get release codename
-        id: distro
-        run: echo "::set-output name=codename::$(lsb_release --codename --short)"
+        run: echo "codename=$(lsb_release --codename --short)" >> "$GITHUB_ENV"
 
       - name: Add PostgreSQL APT repo
         run:
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ steps.distro.outputs.codename
-          }}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ env.codename }}-pgdg main" | sudo
+          tee /etc/apt/sources.list.d/pgdg.list
 
       - name: Update package database with PostgreSQL repo
         run: sudo apt-get update
@@ -246,13 +244,12 @@ jobs:
         run: curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
       - name: Get release codename
-        id: distro
-        run: echo "::set-output name=codename::$(lsb_release --codename --short)"
+        run: echo "codename=$(lsb_release --codename --short)" >> "$GITHUB_ENV"
 
       - name: Add PostgreSQL APT repo
         run:
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ steps.distro.outputs.codename
-          }}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ ${{ env.codename }}-pgdg main" | sudo
+          tee /etc/apt/sources.list.d/pgdg.list
 
       - name: Update package database with PostgreSQL repo
         run: sudo apt-get update
